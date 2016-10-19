@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_personal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/android_layout_bg" >
+
+    <RelativeLayout
+        android:id="@+id/personal_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/android_title_bg" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="@string/personal_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size" />
+
+       
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/personal_top_layout" >
+
+        <ImageView
+            android:id="@+id/personal_background_image"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-100dp"
+            android:background="@drawable/android_layout_bg" />
+
+        <com.freshO2O.widgets.CustomScrollView
+            android:id="@+id/personal_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:orientation="vertical" >
+
+                <!-- 登录前 -->
+
+                <LinearLayout
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="238dp"
+                    android:orientation="vertical"
+                    android:visibility="visible" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/personal_welcome"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/medium_text_size" />
+
+                    <Button
+                        android:id="@+id/personal_login_button"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/my_personal_click_login"
+                        android:gravity="center"
+                        android:text="@string/personal_login"
+                        android:textColor="@color/login_button"
+                        android:textSize="@dimen/small_text_size"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/personal_register_button"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/my_personal_click_login"
+                        android:gravity="center"
+                        android:text="@string/personal_register"
+                        android:textColor="@color/login_button"
+                        android:textSize="@dimen/small_text_size"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <!-- 登录后 -->
+
+                <RelativeLayout
+                    
+                    android:id="@+id/personal"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dip"
+                    android:gravity="center_vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/avatar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dip"
+                        android:background="@drawable/main_avatar_bg"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/main_persionIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/avatar"
+                        android:layout_alignLeft="@+id/avatar"
+                        android:layout_alignRight="@+id/avatar"
+                        android:layout_alignTop="@+id/avatar"
+                        android:layout_margin="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/nohead" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/avatar"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dip"
+                        android:layout_toRightOf="@+id/avatar" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dip"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:text="zhangsan"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/jobtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="普通用户"
+                                android:textColor="@color/black" />
+                         
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/afterlogin"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/android_layout_bg"
+                    android:orientation="vertical" >
+
+                    
+                    <TextView
+                        style="@style/PersonalCenterText"
+                        android:text="@string/personal_order_center" />
+					<!-- *********************  订单查看  *************************** -->
+                    <LinearLayout style="@style/PersonalMainLayoutStyle" >
+
+                        <RelativeLayout style="@style/PersonalTopStyle" 
+                            android:id="@+id/orderselect">
+
+                            <ImageView
+                                android:id="@+id/personal_icon_01"
+                                style="@style/PersonalIconStyle"
+                                android:layout_width="36dp"
+                                android:layout_height="38dp"
+                                android:src="@drawable/android_personel_quickly_order" />
+
+                            <TextView
+                                style="@style/PersonalTextStyle"
+                                android:layout_toRightOf="@id/personal_icon_01"
+                                android:text="@string/personal_fast_search" />
+
+                            <ImageView
+                                style="@style/PersonalRightIconStyle"
+                                android:src="@drawable/android_list_idex" />
+                        </RelativeLayout>
+
+                        <View style="@style/PersonalLine" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/PersonalCenterText"
+                        android:text="@string/personal_account_center" />
+					<!-- *********************  积分查看  *************************** -->
+                    <LinearLayout style="@style/PersonalMainLayoutStyle" 
+                        android:id="@+id/integrationview">
+
+                        <View style="@style/PersonalLine" />
+
+                        <RelativeLayout style="@style/PersonalBottomStyle" >
+
+                            <ImageView
+                                android:id="@+id/personal_icon_06"
+                                style="@style/PersonalIconStyle"
+                                android:src="@drawable/android_my_jd_messages" />
+
+                            <TextView
+                                style="@style/PersonalTextStyle"
+                                android:layout_toRightOf="@id/personal_icon_06"
+                                android:text="@string/personal_information" />
+
+                            <ImageView
+                                style="@style/PersonalRightIconStyle"
+                                android:src="@drawable/android_list_idex" />
+                        </RelativeLayout>
+
+                        <View style="@style/PersonalLine" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/PersonalCenterText"
+                        android:text="@string/personal_customer_service" />
+
+                    <!-- *********************  地址管理  *************************** -->
+
+                    <LinearLayout style="@style/PersonalMainLayoutStyle"
+                        android:id="@+id/addressmanage" >
+
+                        <RelativeLayout
+                            style="@style/PersonalTopStyle"
+                            android:layout_marginBottom="10dp" >
+
+                            <ImageView
+                                android:id="@+id/personal_icon_09"
+                                style="@style/PersonalIconStyle"
+                                android:src="@drawable/android_my_jd_return_repair" />
+
+                            <TextView
+                                style="@style/PersonalTextStyle"
+                                android:layout_toRightOf="@id/personal_icon_09"
+                                android:text="@string/personal_return_back" />
+
+                            <ImageView
+                                style="@style/PersonalRightIconStyle"
+                                android:src="@drawable/android_list_idex" />
+                        </RelativeLayout>
+
+                        <View style="@style/PersonalLine" />
+                    </LinearLayout>
+
+                    <!-- *********************************************************************** -->
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.freshO2O.widgets.CustomScrollView>
+    </RelativeLayout>
+
+</RelativeLayout>

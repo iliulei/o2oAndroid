@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical" >
+
+    <LinearLayout style="@style/PersonalMainLayoutStyle" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_to_car_button_disabled"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:text="@string/more_advice"
+            android:textSize="16sp" />
+
+        <View style="@style/PersonalLine" />
+
+        <RelativeLayout
+            style="@style/PersonalBottomStyle"
+            android:layout_marginBottom="10dp" >
+
+            <EditText
+                android:id="@+id/personal_favour_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="15dp"
+                android:inputType="textMultiLine" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- *********************************************************************** -->
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/android_title_bg"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="@string/more_sure"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+</LinearLayout>
