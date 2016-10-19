@@ -25,6 +25,8 @@ public class IndexGalleryAdapter extends BaseAdapter {
 		this.context = context;
 		this.layoutId = layoutId;
 		this.listData = listData;
+		
+		
 		this.to = to;
 	}
 
