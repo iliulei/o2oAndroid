@@ -58,7 +58,6 @@ public class GoodsListActivity extends Activity {
 	String category = "";
 	private int LOGIN_CODE = 100;
 	private ShopAdapter adapter;		//自定义适配器
-	
 	private ListView listview;
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -67,7 +66,6 @@ public class GoodsListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.goods_list);
-		
 		category = (String)getIntent().getSerializableExtra("category");
 		
 //		ToastUtil.showToast(BaseDataGridActivity.this, category);
@@ -112,7 +110,7 @@ public class GoodsListActivity extends Activity {
 		}
 //		params.add(new BasicNameValuePair(key2, value2));
 		
-		myurl = Configer.SERVER_HOST+"/goodsSelectByCategory.action";
+		myurl = Configer.getServerAddress(getApplicationContext())+"/goodsSelectByCategory.action";
 		
 		new Thread(getJson).start();
 	}

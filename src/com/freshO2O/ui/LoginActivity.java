@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.freshO2O.R;
@@ -45,6 +46,7 @@ import com.freshO2O.utils.ToastUtil;
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private EditText loginaccount, loginpassword ,verifycodeText;
+	private TextView serversettingTv;
 	private Button loginBtn;
 	private Intent mIntent;
 	String username;
@@ -67,9 +69,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		loginaccount = (EditText) this.findViewById(R.id.loginaccount);
 		loginpassword = (EditText) this.findViewById(R.id.loginpassword);
 //		verifycodeText = (EditText) this.findViewById(R.id.verifycode);
-
-		loginBtn = (Button) this.findViewById(R.id.login);
 		
+		loginBtn = (Button) this.findViewById(R.id.login);
+		serversettingTv = (TextView) this.findViewById(R.id.tv_serversetting);
 		rememberme = (CheckBox) findViewById(R.id.rememberme);
 		autologin = (CheckBox) findViewById(R.id.autologin);
 
@@ -82,7 +84,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	protected void initView() {
 
 		loginBtn.setOnClickListener(this);
-		
+		serversettingTv.setOnClickListener(this);
 		String loginInfo = ShareSharePreferenceUtil.getLoginInfo(this);
 		
 		User u = ShareSharePreferenceUtil.getUser(this);
@@ -91,7 +93,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			if(null != u){
 				loginaccount.setText(u.getAccount());
 				loginpassword.setText(u.getPassword());
+				rememberme.setChecked(true);
 			}
+		}else if("2".equals(loginInfo)){
+			if(null != u){
+				loginaccount.setText(u.getAccount());
+				loginpassword.setText(u.getPassword());
+				rememberme.setChecked(true);
+				autologin.setChecked(true);
+				userlogin();
+			}
+			
 		}
 
 	}
@@ -99,12 +111,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		
-
 		case R.id.login:
-
 			userlogin();
-
+			break;
+		case R.id.tv_serversetting:
+			Intent intent = new Intent(LoginActivity.this, ServerSettingActivity.class);
+			startActivity(intent);
 			break;
 
 		default:
@@ -188,8 +200,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			username = loginaccount.getText().toString().trim();
 			password = loginpassword.getText().toString().trim();
 			
-			
-			
 			MyApplication.user.setAccount(username);
 			MyApplication.user.setPassword(password);
 			
@@ -198,15 +208,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			if(rememberme.isChecked()){
 				ShareSharePreferenceUtil.saveUser(this, MyApplication.user);
 				ShareSharePreferenceUtil.saveLoginInfo(this, "1");
-				
 			}
 			
 			if(autologin.isChecked()){
 				ShareSharePreferenceUtil.saveLoginInfo(this, "2");
 			}
-			
 			finish();
-			
+			//跳转到首页
+			Intent intent =  new Intent(LoginActivity.this,HomeActivity.class);
+			startActivity(intent);	
 		}else{
 			ToastUtil.showToast(LoginActivity.this, "登录失败，请检查账号和密码是否正确！");
 		}

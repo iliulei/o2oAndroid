@@ -111,7 +111,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton meal,vegetables,fruit,grain,dry,reco;
+	private ImageButton meal,vegetables,fruit,grain,dry,reco,serversetting;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -166,6 +166,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		
 		reco = (ImageButton)findViewById(R.id.reco);
 		reco.setOnClickListener(indexClickListener);
+		
+		serversetting= (ImageButton)findViewById(R.id.img_serversetting);
+		serversetting.setOnClickListener(indexClickListener);
 	}
 	
 	
@@ -224,6 +227,13 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				intent = new Intent(IndexActivity.this, CookBookListActivity.class);
 //				intent.putExtras(bundle);
 				startActivityForResult(intent, LOGIN_CODE);
+				break;
+			case R.id.img_serversetting:
+				System.out.println("点击了服务器设置");
+				intent = new Intent(IndexActivity.this, ServerSettingActivity.class);
+//				intent.putExtras(bundle);
+				startActivity(intent);
+				//startActivityForResult(intent, LOGIN_CODE);
 				break;
 
 			default:
@@ -342,9 +352,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		mStormGallery = (Gallery) findViewById(R.id.index_jingqiu_gallery);
 		mPromotionGallery = (Gallery) findViewById(R.id.index_tehui_gallery);
 
-		mSearchBox = (EditText) findViewById(R.id.index_search_edit);
+	/*	mSearchBox = (EditText) findViewById(R.id.index_search_edit);
 		mCamerButton = (ImageButton) findViewById(R.id.index_camer_button);
 		mTopLayout = (LinearLayout) findViewById(R.id.index_top_layout);
+		屏蔽头部搜索
+		*/
 		
 //		shake=(ImageButton)findViewById(R.id.index_shake);
 //		
@@ -448,10 +460,10 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		mBarPopupWindow = new HomeSearchBarPopupWindow(this,LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		mBarPopupWindow.setOnSearchBarItemClickListener(this);
 
-		mCamerButton.setOnClickListener(this);
-		mSearchBox.setOnClickListener(this);
+		//mCamerButton.setOnClickListener(this);
+		//mSearchBox.setOnClickListener(this);
 
-		mSearchBox.setInputType(InputType.TYPE_NULL);
+		//mSearchBox.setInputType(InputType.TYPE_NULL);
 	}
 
 	private void initData() {
@@ -618,7 +630,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		//相机
-		case R.id.index_camer_button:
+/*		case R.id.index_camer_button:
 			int height = mTopLayout.getHeight()
 					+ CommonTools.getStatusBarHeight(this);
 			mBarPopupWindow.showAtLocation(mTopLayout, Gravity.TOP, 0, height);
@@ -626,7 +638,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
         //搜索框
 		case R.id.index_search_edit:
 			openActivity(SearchActivity.class);
-			break;
+			break;*/
 
 		default:
 			break;

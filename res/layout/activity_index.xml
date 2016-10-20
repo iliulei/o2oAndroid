@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+<!--     <LinearLayout
         android:id="@+id/index_top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,11 +45,11 @@
             android:src="@drawable/android_search_button_icon"
             android:visibility="gone" />
     </LinearLayout>
-
+ -->
+       <!-- android:layout_below="@id/index_top_layout" -->
     <com.freshO2O.widgets.AbScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/index_top_layout"
         android:background="@drawable/home_panicbuying_background"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
@@ -406,6 +406,43 @@
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
                 </LinearLayout>
+                
+                <!-- begin -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:baselineAligned="false"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <ImageButton
+                            android:id="@+id/img_serversetting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/app_home_shortcuts_button_selector"
+                            android:src="@drawable/catergory_mobile" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="服务器设置"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/micro_text_size" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <!-- end -->
+                
 
                 <TextView
                     android:layout_width="wrap_content"

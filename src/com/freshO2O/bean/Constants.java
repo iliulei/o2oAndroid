@@ -42,6 +42,19 @@ public class Constants {
 	
 	// 缓存图片路径
 		public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/images2/";
+		
+		/**
+		 * 服务器地址
+		 */
+		public static final String SERVER_SETTING_ADDRESS = "server_setting_address";
+		/**
+		 * 端口号
+		 */
+		public static final String SERVER_SETTING_PORT = "server_setting_port";
+		/**
+		 * 项目名称
+		 */
+		public static final String SERVER_SETTING_PROJECTNAME = "server_setting_projectname";
 
 	
 }

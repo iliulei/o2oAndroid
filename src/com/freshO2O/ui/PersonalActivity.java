@@ -28,7 +28,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 	private CustomScrollView mScrollView = null;
 	private Intent mIntent = null;
 	private LinearLayout afterlogin;
-	private LinearLayout login,integrationview,addressmanage;
+	private LinearLayout login,integrationview,addressmanage,out;
 	private RelativeLayout personal,orderselect;
 	private TextView username,grade;
 	private int LOGIN_CODE = 100;
@@ -57,6 +57,8 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 		personal = (RelativeLayout) findViewById(R.id.personal);
 		orderselect = (RelativeLayout) findViewById(R.id.orderselect);
 		addressmanage = (LinearLayout) findViewById(R.id.addressmanage);
+		out = (LinearLayout) findViewById(R.id.out);
+		
 		username = (TextView) findViewById(R.id.username);
 		
 		grade = (TextView) findViewById(R.id.jobtitle);
@@ -70,7 +72,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 		mRegisterButton.setOnClickListener(this);
 		orderselect.setOnClickListener(this);
 		addressmanage.setOnClickListener(this);
-		
+		out.setOnClickListener(this);
 		integrationview.setOnClickListener(this);
 
 		String loginInfo = ShareSharePreferenceUtil.getLoginInfo(this);
@@ -132,9 +134,14 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 
 			startActivityForResult(mIntent, LOGIN_CODE);
 			break;
-			
-			
-			
+		case R.id.out:
+//			ToastUtil.showToast(this, "退出");
+			mIntent = new Intent(PersonalActivity.this, LoginActivity.class);
+			ShareSharePreferenceUtil.clearLoginInfo(PersonalActivity.this);
+			ShareSharePreferenceUtil.clearUser(PersonalActivity.this);
+			startActivity(mIntent);
+			finish();
+			break;
 		default:
 			break;
 		}

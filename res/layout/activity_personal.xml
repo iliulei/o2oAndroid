@@ -262,7 +262,37 @@
                     </LinearLayout>
 
                     <!-- *********************************************************************** -->
+					 
+					 <!-- *********************  退出  *************************** -->
+					<TextView
+                        style="@style/PersonalCenterText"
+                        android:text=" 退出" />
+                    <LinearLayout style="@style/PersonalMainLayoutStyle"
+                        android:id="@+id/out" >
 
+                        <RelativeLayout
+                            style="@style/PersonalTopStyle"
+                            android:layout_marginBottom="10dp" >
+
+                            <ImageView
+                                android:id="@+id/personal_icon_10"
+                                style="@style/PersonalIconStyle"
+                                android:src="@drawable/android_my_jd_return_repair" />
+
+                            <TextView
+                                style="@style/PersonalTextStyle"
+                                android:layout_toRightOf="@id/personal_icon_10"
+                                android:text="退出" />
+
+                            <ImageView
+                                style="@style/PersonalRightIconStyle"
+                                android:src="@drawable/android_list_idex" />
+                        </RelativeLayout>
+
+                        <View style="@style/PersonalLine" />
+                    </LinearLayout>
+
+                    <!-- *********************************************************************** -->
                 </LinearLayout>
             </LinearLayout>
         </com.freshO2O.widgets.CustomScrollView>
