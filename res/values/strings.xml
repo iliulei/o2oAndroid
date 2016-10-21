@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">splash</string>
+    <string name="app_name">立高</string>
     <string name="splash_version_info">生鲜客户端\n\nVersion 1.0.0</string>
     <string name="index_search_edit_hint">搜索商品</string>
 

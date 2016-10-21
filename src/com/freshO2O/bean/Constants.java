@@ -34,6 +34,11 @@ public class Constants {
 	public static String user = "";
 	public static String pass = "";
 	
+	/**
+	 * 服务器链接错误
+	 */
+	public static String SERVERERROR = "servererror";
+	
 	// SDCard路径
 		public static final String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 	

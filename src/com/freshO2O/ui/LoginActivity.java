@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.freshO2O.R;
 import com.freshO2O.app.MyApplication;
 import com.freshO2O.bean.Configer;
+import com.freshO2O.bean.Constants;
 import com.freshO2O.entity.User;
 import com.freshO2O.ui.base.BaseActivity;
 import com.freshO2O.utils.ShareSharePreferenceUtil;
@@ -118,7 +119,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			Intent intent = new Intent(LoginActivity.this, ServerSettingActivity.class);
 			startActivity(intent);
 			break;
-
 		default:
 			break;
 		}
@@ -150,9 +150,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
-
 			CheckBox box = (CheckBox) buttonView;
-
+			if(isChecked&&box.getId() == R.id.autologin){
+				rememberme.setChecked(true);
+			}
 //			Toast.makeText(getApplicationContext(),
 //					"获取的值:" + isChecked + "xxxxx" + box.getText(),
 //					Toast.LENGTH_LONG).show();
@@ -176,7 +177,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		params.add(new BasicNameValuePair("password", password));
 		params.add(new BasicNameValuePair("verifycode", verifycode));
 		
-		myurl = Configer.SERVER_HOST+"/login.action";
+		myurl = Configer.getServerAddress(getApplicationContext())+"/login.action";
 		
 		new Thread(getJson).start();
 	}
@@ -217,8 +218,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			//跳转到首页
 			Intent intent =  new Intent(LoginActivity.this,HomeActivity.class);
 			startActivity(intent);	
-		}else{
-			ToastUtil.showToast(LoginActivity.this, "登录失败，请检查账号和密码是否正确！");
+		}else if(Constants.SERVERERROR.equals(re)){
+			ToastUtil.showToast(LoginActivity.this, "服务器链接错误!");
+		}
+		else if("error".equals(re)){
+			ToastUtil.showToast(LoginActivity.this, "登录失败，请检查账号和密码是否正确!");
 		}
 	}
 
@@ -241,12 +245,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}  
+				}else{
+					execute(Constants.SERVERERROR);
 				}
 				
 				
 			} else if (msg.what == 0x01) {
-				Toast.makeText(getApplicationContext(), "获取失败",
-						Toast.LENGTH_LONG).show();
+				ToastUtil.showToast(LoginActivity.this, "服务器链接错误!");
+				/*Toast.makeText(getApplicationContext(), "获取失败",
+						Toast.LENGTH_LONG).show();*/
 			}
 		}
 	};
@@ -266,8 +273,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		/* 添加请求参数到请求对象 */
 		HttpParams httpParameters1 = new BasicHttpParams();
 		HttpConnectionParams
-		.setConnectionTimeout(httpParameters1, 10 * 1000);
-		HttpConnectionParams.setSoTimeout(httpParameters1, 10 * 1000);
+		.setConnectionTimeout(httpParameters1, 3 * 1000);
+		HttpConnectionParams.setSoTimeout(httpParameters1, 5 * 1000);
 		//设置超时参数
 		try {
 			httpRequest.setParams(httpParameters1);
@@ -284,6 +291,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			else 
 			{
 				// 获取出现错误
+				
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
