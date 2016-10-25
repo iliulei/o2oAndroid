@@ -28,8 +28,8 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 	private CustomScrollView mScrollView = null;
 	private Intent mIntent = null;
 	private LinearLayout afterlogin;
-	private LinearLayout login,integrationview,addressmanage,out;
-	private RelativeLayout personal,orderselect;
+	private LinearLayout login,out;//integrationview,addressmanage
+	private RelativeLayout personal;//orderselect
 	private TextView username,grade;
 	private int LOGIN_CODE = 100;
 	
@@ -52,11 +52,11 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 		afterlogin = (LinearLayout) findViewById(R.id.afterlogin);
 		
 		login = (LinearLayout) findViewById(R.id.login);
-		integrationview = (LinearLayout) findViewById(R.id.integrationview);
+		//integrationview = (LinearLayout) findViewById(R.id.integrationview);
 		
 		personal = (RelativeLayout) findViewById(R.id.personal);
-		orderselect = (RelativeLayout) findViewById(R.id.orderselect);
-		addressmanage = (LinearLayout) findViewById(R.id.addressmanage);
+		//orderselect = (RelativeLayout) findViewById(R.id.orderselect);
+		//addressmanage = (LinearLayout) findViewById(R.id.addressmanage);
 		out = (LinearLayout) findViewById(R.id.out);
 		
 		username = (TextView) findViewById(R.id.username);
@@ -70,23 +70,22 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 
 		mLoginButton.setOnClickListener(this);
 		mRegisterButton.setOnClickListener(this);
-		orderselect.setOnClickListener(this);
-		addressmanage.setOnClickListener(this);
+		//orderselect.setOnClickListener(this);
+		//addressmanage.setOnClickListener(this);
 		out.setOnClickListener(this);
-		integrationview.setOnClickListener(this);
+		//integrationview.setOnClickListener(this);
 
 		String loginInfo = ShareSharePreferenceUtil.getLoginInfo(this);
 		
 		User u = ShareSharePreferenceUtil.getUser(this);
 		
 		if(null != u){
-			if("2".equals(loginInfo)){
+			//if("2".equals(loginInfo)){
 				personal.setVisibility(View.VISIBLE);
 				afterlogin.setVisibility(View.VISIBLE);
 				login.setVisibility(View.GONE);
-				
 				username.setText(u.getAccount());
-			}else if("1".equals(loginInfo)){
+		/*	}else if("1".equals(loginInfo)){
 				personal.setVisibility(View.GONE);
 				afterlogin.setVisibility(View.GONE);
 				login.setVisibility(View.VISIBLE);
@@ -94,7 +93,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 				personal.setVisibility(View.GONE);
 				afterlogin.setVisibility(View.GONE);
 				login.setVisibility(View.VISIBLE);
-			}
+			}*/
 		}
 	}
 
@@ -115,7 +114,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 			startActivityForResult(mIntent, LOGIN_CODE);
 			break;
 			
-		case R.id.orderselect:
+		/*case R.id.orderselect:
 //			ToastUtil.showToast(this, "订单管理");
 			mIntent = new Intent(PersonalActivity.this, IndentActivity.class);
 
@@ -133,7 +132,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 			mIntent = new Intent(PersonalActivity.this, AddressManageActivity.class);
 
 			startActivityForResult(mIntent, LOGIN_CODE);
-			break;
+			break;*/
 		case R.id.out:
 //			ToastUtil.showToast(this, "退出");
 			mIntent = new Intent(PersonalActivity.this, LoginActivity.class);

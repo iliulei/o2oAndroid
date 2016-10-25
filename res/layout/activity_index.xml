@@ -266,12 +266,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/catergory_digtcamer" />
-
+                            android:src="@drawable/arrow_left_64" />
+					
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="肉类"
+                            android:text="入库"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -288,12 +288,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/catergory_book" />
+                            android:src="@drawable/arrow_right_64" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="蔬菜"
+                            android:text="出库"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -320,12 +320,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/catergory_appliance" />
+                            android:src="@drawable/arrow_up_64" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="水果"
+                            android:text="组垛"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -342,18 +342,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/catergory_furnitrue" />
+                            android:src="@drawable/arrow_down_64" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="谷物"
+                            android:text="拆垛"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
                 </LinearLayout>
                 
-                <LinearLayout
+               <!--  <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -405,43 +405,9 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
-                </LinearLayout>
+                </LinearLayout> -->
                 
-                <!-- begin -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
-                    android:baselineAligned="false"
-                    android:gravity="center"
-                    android:orientation="horizontal" >
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical" >
-
-                        <ImageButton
-                            android:id="@+id/img_serversetting"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/catergory_mobile" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="服务器设置"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/micro_text_size" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-                <!-- end -->
                 
 
                 <TextView

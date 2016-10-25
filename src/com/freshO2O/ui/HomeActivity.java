@@ -82,7 +82,7 @@ public class HomeActivity extends TabActivity {
 							mTabHost.setCurrentTabByTag(TAB_PERSONAL);
 							break;
 							
-						case R.id.home_tab_category:
+				/*		case R.id.home_tab_category:
 							mTabHost.setCurrentTabByTag(TAB_CATEGORY);
 							break;
 
@@ -92,7 +92,7 @@ public class HomeActivity extends TabActivity {
 
 						case R.id.home_tab_search:
 							mTabHost.setCurrentTabByTag(TAB_SEARCH);
-							break;
+							break;*/
 
 						default:
 							break;

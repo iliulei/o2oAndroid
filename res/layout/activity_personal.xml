@@ -171,11 +171,11 @@
                     android:orientation="vertical" >
 
                     
-                    <TextView
+                   <!--  <TextView
                         style="@style/PersonalCenterText"
-                        android:text="@string/personal_order_center" />
+                        android:text="@string/personal_order_center" /> -->
 					<!-- *********************  订单查看  *************************** -->
-                    <LinearLayout style="@style/PersonalMainLayoutStyle" >
+                 <!--    <LinearLayout style="@style/PersonalMainLayoutStyle" >
 
                         <RelativeLayout style="@style/PersonalTopStyle" 
                             android:id="@+id/orderselect">
@@ -203,9 +203,9 @@
 
                     <TextView
                         style="@style/PersonalCenterText"
-                        android:text="@string/personal_account_center" />
+                        android:text="@string/personal_account_center" /> -->
 					<!-- *********************  积分查看  *************************** -->
-                    <LinearLayout style="@style/PersonalMainLayoutStyle" 
+<!--                     <LinearLayout style="@style/PersonalMainLayoutStyle" 
                         android:id="@+id/integrationview">
 
                         <View style="@style/PersonalLine" />
@@ -233,10 +233,10 @@
                     <TextView
                         style="@style/PersonalCenterText"
                         android:text="@string/personal_customer_service" />
-
+ -->
                     <!-- *********************  地址管理  *************************** -->
 
-                    <LinearLayout style="@style/PersonalMainLayoutStyle"
+              <!--       <LinearLayout style="@style/PersonalMainLayoutStyle"
                         android:id="@+id/addressmanage" >
 
                         <RelativeLayout
@@ -259,7 +259,7 @@
                         </RelativeLayout>
 
                         <View style="@style/PersonalLine" />
-                    </LinearLayout>
+                    </LinearLayout> -->
 
                     <!-- *********************************************************************** -->
 					 

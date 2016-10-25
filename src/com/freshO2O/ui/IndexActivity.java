@@ -111,7 +111,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton meal,vegetables,fruit,grain,dry,reco,serversetting;
+	private ImageButton meal,vegetables,fruit,grain,dry,reco;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -161,14 +161,12 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		grain = (ImageButton)findViewById(R.id.grain);
 		grain.setOnClickListener(indexClickListener);
 		
-		dry = (ImageButton)findViewById(R.id.dry);
+	/*	dry = (ImageButton)findViewById(R.id.dry);
 		dry.setOnClickListener(indexClickListener);
 		
 		reco = (ImageButton)findViewById(R.id.reco);
-		reco.setOnClickListener(indexClickListener);
+		reco.setOnClickListener(indexClickListener);*/
 		
-		serversetting= (ImageButton)findViewById(R.id.img_serversetting);
-		serversetting.setOnClickListener(indexClickListener);
 	}
 	
 	
@@ -179,39 +177,37 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 			switch (v.getId()) {
 			//摇一摇！
 			case R.id.meal:
-				Bundle bundle = new Bundle();
+			/*	Bundle bundle = new Bundle();
 				bundle.putSerializable("category", "肉类");
 				Intent intent = new Intent(IndexActivity.this, GoodsListActivity.class);
 				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
+				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
 				
 			case R.id.vegetables:
-				bundle = new Bundle();
+			/*	bundle = new Bundle();
 				bundle.putSerializable("category", "蔬菜");
 
 				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
 				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
+				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
-			case R.id.fruit:
-				bundle = new Bundle();
+			case R.id.fruit:   
+				/*bundle = new Bundle();
 				bundle.putSerializable("category", "水果");
-
 				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
 				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
+				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
 				
 			case R.id.grain:
-				bundle = new Bundle();
+				/*bundle = new Bundle();
 				bundle.putSerializable("category", "谷物");
-
 				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
 				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
+				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
-			case R.id.dry:
+		/*	case R.id.dry:
 				bundle = new Bundle();
 				bundle.putSerializable("category", "干货");
 
@@ -227,14 +223,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				intent = new Intent(IndexActivity.this, CookBookListActivity.class);
 //				intent.putExtras(bundle);
 				startActivityForResult(intent, LOGIN_CODE);
-				break;
-			case R.id.img_serversetting:
-				System.out.println("点击了服务器设置");
-				intent = new Intent(IndexActivity.this, ServerSettingActivity.class);
-//				intent.putExtras(bundle);
-				startActivity(intent);
-				//startActivityForResult(intent, LOGIN_CODE);
-				break;
+				break;*/
 
 			default:
 				break;
@@ -558,7 +547,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 			mImageViews[position].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int i = posi.getPosi();
+/*                    int i = posi.getPosi();
                     System.out.println(i);
                     
                     Goods g = recomendGoods.get(i);
@@ -568,10 +557,13 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
                     
                     Bundle bundle = new Bundle();
         			bundle.putSerializable("goods", recomendGoods.get(i));
-
+        			
         			Intent intent = new Intent(IndexActivity.this, GoodsMoreInfoActivity.class);
         			intent.putExtras(bundle);
-        			startActivityForResult(intent, LOGIN_CODE);
+        			startActivityForResult(intent, LOGIN_CODE);*/
+        			
+                	Intent intent = new Intent(IndexActivity.this, WebViewActivity.class);
+        			startActivity(intent);
                     
                 }
             });

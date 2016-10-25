@@ -45,7 +45,7 @@
                 android:background="@drawable/home_tab_background_selector"
                 android:drawableTop="@drawable/home_tab_personal_selector" />
 				
-            <RadioButton
+          <!--   <RadioButton
                 android:id="@+id/home_tab_cart"
                 style="@style/home_tab_bottom"
                 android:background="@drawable/home_tab_background_selector"
@@ -61,7 +61,7 @@
                 android:id="@+id/home_tab_search"
                 style="@style/home_tab_bottom"
                 android:background="@drawable/home_tab_background_selector"
-                android:drawableTop="@drawable/home_tab_search_selector" />
+                android:drawableTop="@drawable/home_tab_search_selector" /> -->
         </RadioGroup>
     </LinearLayout>
 

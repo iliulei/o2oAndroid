@@ -184,6 +184,12 @@
             android:name=".AddressAddActivity"
             android:label="@string/title_activity_address_add" >
         </activity>
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:label="@string/title_activity_address_add" >
+        </activity>
+        
+        
     </application>
 
 </manifest>
