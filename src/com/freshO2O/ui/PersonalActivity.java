@@ -2,6 +2,7 @@ package com.freshO2O.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,7 +33,7 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout personal;//orderselect
 	private TextView username,grade;
 	private int LOGIN_CODE = 100;
-	
+	private long mExitTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,8 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 				personal.setVisibility(View.VISIBLE);
 				afterlogin.setVisibility(View.VISIBLE);
 				login.setVisibility(View.GONE);
-				username.setText(u.getAccount());
+				MyApplication application= (MyApplication)getApplication();
+				username.setText(application.getUserInfo().getName());
 		/*	}else if("1".equals(loginInfo)){
 				personal.setVisibility(View.GONE);
 				afterlogin.setVisibility(View.GONE);
@@ -169,6 +171,21 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 		
 		
 		
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		   if (keyCode == KeyEvent.KEYCODE_BACK) {
+               if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                       Object mHelperUtils;
+                       ToastUtil.showToast(getApplicationContext(),"再按一次退出程序");
+                      // Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                       mExitTime = System.currentTimeMillis();
+               } else {
+                       finish();
+               }
+               return true;
+       }
+       return super.onKeyDown(keyCode, event);
 	}
 
 }

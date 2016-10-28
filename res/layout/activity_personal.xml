@@ -79,7 +79,7 @@
                         android:textColor="@color/login_button"
                         android:textSize="@dimen/small_text_size"
                         android:textStyle="bold" />
-
+					
                     <Button
                         android:id="@+id/personal_register_button"
                         android:layout_width="100dp"
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dip"
                     android:gravity="center_vertical" >
-
+					
                     <LinearLayout
                         android:id="@+id/avatar"
                         android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
                         android:layout_alignTop="@+id/avatar"
                         android:layout_margin="11dip"
                         android:scaleType="fitXY"
-                        android:src="@drawable/nohead" />
+                        android:src="@drawable/slt" />
 
                     <RelativeLayout
                         android:layout_width="fill_parent"

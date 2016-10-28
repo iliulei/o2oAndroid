@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
@@ -19,6 +20,7 @@ import com.freshO2O.R;
 import com.freshO2O.app.MyApplication;
 import com.freshO2O.shoppingcart.ShopActivity;
 import com.freshO2O.utils.ShareSharePreferenceUtil;
+import com.freshO2O.utils.ToastUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HomeActivity extends TabActivity {
@@ -33,7 +35,7 @@ public class HomeActivity extends TabActivity {
 	public static final String TAB_CATEGORY = "CATEGORY_ACTIVITY";
 	public static final String TAB_CART = "CART_ACTIVITY";
 	public static final String TAB_PERSONAL = "PERSONAL_ACTIVITY";
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,7 +46,7 @@ public class HomeActivity extends TabActivity {
 		findViewById();
 		initView();
 		
-		MyApplication.user = ShareSharePreferenceUtil.getUser(this);
+		//MyApplication.user = ShareSharePreferenceUtil.getUser(this);
 		
 	}
 
@@ -170,5 +172,7 @@ public class HomeActivity extends TabActivity {
 				.setNegativeButton(negativeText, onNegativeClickListener)
 				.show();
 	}
+	
+
 
 }

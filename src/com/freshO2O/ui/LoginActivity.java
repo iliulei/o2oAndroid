@@ -21,6 +21,10 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +50,8 @@ import com.freshO2O.utils.ToastUtil;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
+	
+	
 	private EditText loginaccount, loginpassword ,verifycodeText;
 	private TextView serversettingTv;
 	private Button loginBtn;
@@ -163,15 +169,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	
 	List<NameValuePair> params;
 	private String result;
-	private String myurl;
+	private String myurl,soap_action;
 	
 	private void verify(){
-		
 		
 		username = loginaccount.getText().toString().trim();
 		password = loginpassword.getText().toString().trim();
 //		verifycode = verifycodeText.getText().toString().trim();
-		
 		params =new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("account", username));
 		params.add(new BasicNameValuePair("password", password));
@@ -186,8 +190,20 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		public void run() {
 			try {
-				result = GetJson(myurl, params);
-				handler.sendEmptyMessage(0x00);
+				
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE, Configer.WcfMethod_LoginService);
+				rpc.addProperty("logName", username);
+				rpc.addProperty("pwd", password);
+				
+		    	myurl = Configer.getWcfUrl(getApplicationContext());
+		    	soap_action = Configer.SOAPACTION_FRONT+Configer.WcfMethod_LoginService;
+		    	result = GetJsonWcf(rpc,myurl,soap_action);
+				//result = GetJson(myurl, params);
+				if("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x00);
+				
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}
@@ -195,7 +211,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	};
 	
 	private void execute(String re){
-		if("ok".equals(re)){
+		if("登录成功".equals(re)){
 			
 			ToastUtil.showToast(LoginActivity.this, "登录成功");
 			username = loginaccount.getText().toString().trim();
@@ -208,6 +224,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			
 			if(rememberme.isChecked()){
 				ShareSharePreferenceUtil.saveUser(this, MyApplication.user);
+				
+				System.out.println(MyApplication.user);
+				
 				ShareSharePreferenceUtil.saveLoginInfo(this, "1");
 			}
 			
@@ -220,8 +239,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			startActivity(intent);	
 		}else if(Constants.SERVERERROR.equals(re)){
 			ToastUtil.showToast(LoginActivity.this, "服务器链接错误!");
-		}
-		else if("error".equals(re)){
+		}else {
 			ToastUtil.showToast(LoginActivity.this, "登录失败，请检查账号和密码是否正确!");
 		}
 	}
@@ -230,18 +248,23 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		public void handleMessage(android.os.Message msg) {
 			if (msg.what == 0x00) {
 				Log.v("PostGetJson", "" + result);
-
+				
 				if(null != result){
 					try {
 						JSONObject json= new JSONObject(result);  
-						String re = (String)json.get("result");
-						String addr = (String)json.get("addr");
-						
-						MyApplication.user.setRecvaddr(addr);
-						
+						String re = (String)json.get("Message");
+						Object JsonStr = (Object)json.get("JsonStr");
+						if(!JsonStr.equals(null)){
+							json=  new JSONObject(JsonStr.toString());
+							MyApplication application= (MyApplication)getApplication();
+							User user = new User();
+							user.setName((String)json.get("Name"));
+							user.setLoginName((String)json.get("LoginName"));
+							user.setDeptCode((String)json.get("DeptCode"));
+							user.setDeptName((String)json.get("DeptName"));
+							application.setUserInfo(user);
+						}
 						execute(re);
-						
-						
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}  
@@ -258,19 +281,52 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	};
 	
+
+	
+	
+	private String GetJsonWcf(SoapObject rpc, String myUrl,String soap_action) {
+		String result = "ok";
+    	// 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本  
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);  
+        envelope.bodyOut = rpc;  
+        // 设置是否调用的是dotNet开发的WebService  
+        envelope.dotNet = true;
+        HttpTransportSE transport = new HttpTransportSE(myUrl,5*1000);  
+        try {  
+            // 调用WebService  
+            transport.call(soap_action, envelope);  
+        } catch (Exception e) {  
+        	//代表连接失败
+            e.printStackTrace();  
+            result = "error";
+            System.out.println("连接失败!");
+        }  
+        // 获取返回的数据  
+        SoapObject object = (SoapObject) envelope.bodyIn; 
+        if(null==object){
+        	//return;
+        }else
+        // 获取返回的结果  
+        {
+        	  result = object.getProperty(0).toString();
+        }
+		return result;
+	}
+	
+	
 	/**
 	 * 发送post请求获取json字符串
 	 * @param url 网站
 	 * @param params 参数List
 	 * @return json字符串
 	 */
-	private String GetJson(String url, List<NameValuePair> params) {
+/*	private String GetJson(String url, List<NameValuePair> params) {
 		HttpPost httpRequest = new HttpPost(url);
-		/*
+		
 		 * NameValuePair实现请求参数的封装
-		 */
+		 
 		String strResult = null;
-		/* 添加请求参数到请求对象 */
+		 添加请求参数到请求对象 
 		HttpParams httpParameters1 = new BasicHttpParams();
 		HttpConnectionParams
 		.setConnectionTimeout(httpParameters1, 3 * 1000);
@@ -279,13 +335,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		try {
 			httpRequest.setParams(httpParameters1);
 			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-			/* 发送请求并等待响应 */
+			 发送请求并等待响应 
 			HttpResponse httpResponse = new DefaultHttpClient()
 					.execute(httpRequest);
-			/* 若状态码为200 ok */
+			 若状态码为200 ok 
 			if (httpResponse.getStatusLine().getStatusCode() == 200) 
 			{
-				/* 读返回数据 */
+				 读返回数据 
 				strResult = EntityUtils.toString(httpResponse.getEntity());
 			} 
 			else 
@@ -304,6 +360,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			e.printStackTrace();
 		}
 		return strResult;
-	}
+	}*/
 
 }

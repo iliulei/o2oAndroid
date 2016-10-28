@@ -98,7 +98,7 @@ public class AddressEditActivity extends Activity {
 		}
 		
 		params =new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("account", MyApplication.user.getAccount()));
+		params.add(new BasicNameValuePair("account", ""));/*MyApplication.user.getAccount())*/
 		params.add(new BasicNameValuePair("username", username));
 		params.add(new BasicNameValuePair("phone", phone));
 		params.add(new BasicNameValuePair("address", address));

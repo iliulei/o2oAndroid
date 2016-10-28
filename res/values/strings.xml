@@ -27,6 +27,7 @@
 
 
     <!-- 首页 -->
+    <string name="index_title">首页</string>
     <string name="index_limit">还剩</string>
     <string name="index_hour">时</string>
     <string name="index_min">分</string>
@@ -56,7 +57,7 @@
     <string name="scan_retry">二维码扫描出错啦,请重新扫描</string>
     <string name="scan_title">扫一扫</string>
     <!-- 个人中心 -->
-    <string name="personal_title">我的</string>
+    <string name="personal_title">个人中心</string>
     <string name="personal_more">更多</string>
     <string name="personal_welcome">欢迎</string>
     <string name="personal_login">登录</string>

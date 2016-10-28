@@ -9,9 +9,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 public class MyApplication extends Application{
 	private static MyApplication app;
-	
+	//同一个类中使用
 	public static User user = new User();
-	
+	//夸activity使用
+	public User userInfo;
 	public static MyApplication getInstance(){		
 		return app;
 	}
@@ -35,6 +36,15 @@ public class MyApplication extends Application{
         
         
 	}
+
+	public User getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(User userInfo) {
+		this.userInfo = userInfo;
+	}
+	
 	
 	
 }

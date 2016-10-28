@@ -3,6 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+        <RelativeLayout
+        android:id="@+id/index_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/android_title_bg" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="@string/index_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size" />
+    </RelativeLayout>
 <!--     <LinearLayout
         android:id="@+id/index_top_layout"
         android:layout_width="match_parent"
@@ -52,6 +69,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/home_panicbuying_background"
         android:fadingEdge="none"
+        android:layout_below="@id/index_top_layout"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
         android:scrollbars="none" >

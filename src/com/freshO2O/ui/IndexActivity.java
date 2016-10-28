@@ -32,6 +32,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,7 +74,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	private TextView mIndexSeconds = null;
 	private TextView mIndexPrice = null;
 	private TextView mIndexRawPrice = null;
-	
+	private long mExitTime;
 	//=============中部导航栏模块=====
 //	private ImageButton shake;
 	private Intent mIntent;
@@ -251,6 +252,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 			// TODO Auto-generated method stub
 			try
 			{
+				
 				result=GetJson(myurl, params);
 				handler.sendEmptyMessage(0x00);
 			}
@@ -303,6 +305,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 						    
 						}
 						
+						
+						
 						System.out.println("mImageUrls : "+mImageUrls.size());
 						
 						
@@ -315,6 +319,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}  
+				}else{//不通过JAVA服务器设置图片，直接添加固定图片地址
+					initView();
 				}
 				
 				
@@ -372,6 +378,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
 		// ======= 初始化ViewPager ========
+		//轮播图设置一个固定图片地址
+		mImageUrls.add("http://img1.imgtn.bdimg.com/it/u=1724602776,3917498723&fm=21&gp=0.jpg");
+		
 		mIndicators = new ImageView[mImageUrls.size()];
 		if (mImageUrls.size() <= 1) {
 			mIndicator.setVisibility(View.GONE);
@@ -704,4 +713,22 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		}
 		return strResult;
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		   if (keyCode == KeyEvent.KEYCODE_BACK) {
+               if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                       Object mHelperUtils;
+                       ToastUtil.showToast(getApplicationContext(),"再按一次退出程序");
+                      // Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                       mExitTime = System.currentTimeMillis();
+               } else {
+                       finish();
+               }
+               return true;
+       }
+       return super.onKeyDown(keyCode, event);
+	}
+	
+
 }

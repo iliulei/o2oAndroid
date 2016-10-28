@@ -22,9 +22,24 @@ public class User  implements java.io.Serializable {
      private String phone;
      private Date birthday;
      private String addr;
-     
      private String recvaddr;
 
+     /**
+     * 登录用户名
+     */
+    private String LoginName;
+    /**
+    * 帐号名称
+    */
+     private String Name;
+     /**
+     * 工厂编码
+     */
+     private String DeptCode;
+     /**
+     * 工厂名称
+     */
+     private String DeptName;
 
     // Constructors
 
@@ -45,9 +60,12 @@ public class User  implements java.io.Serializable {
         this.birthday = birthday;
         this.addr = addr;
     }
+    
+    
+    
 
-   
-    // Property accessors
+
+	// Property accessors
 
     public String getRecvaddr() {
 		return recvaddr;
@@ -138,8 +156,48 @@ public class User  implements java.io.Serializable {
     public void setAddr(String addr) {
         this.addr = addr;
     }
-   
 
+
+	public String getLoginName() {
+		return LoginName;
+	}
+
+
+	public void setLoginName(String loginName) {
+		LoginName = loginName;
+	}
+
+
+	public String getName() {
+		return Name;
+	}
+
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+
+	public String getDeptCode() {
+		return DeptCode;
+	}
+
+
+	public void setDeptCode(String deptCode) {
+		DeptCode = deptCode;
+	}
+
+
+	public String getDeptName() {
+		return DeptName;
+	}
+
+
+	public void setDeptName(String deptName) {
+		DeptName = deptName;
+	}
+   
+ 
 
 
 

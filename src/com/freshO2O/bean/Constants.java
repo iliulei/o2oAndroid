@@ -60,6 +60,6 @@ public class Constants {
 		 * 项目名称
 		 */
 		public static final String SERVER_SETTING_PROJECTNAME = "server_setting_projectname";
-
+		
 	
 }

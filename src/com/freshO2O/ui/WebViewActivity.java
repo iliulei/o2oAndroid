@@ -24,6 +24,8 @@ public class WebViewActivity extends Activity  {
 	       webView.loadUrl("http://www.realgoal.com.cn/");
 	       WebSettings settings = webView.getSettings();
 	       settings.setJavaScriptEnabled(true);
+	       settings.setUseWideViewPort(true); 
+	       settings.setLoadWithOverviewMode(true); 
 	       //支持屏幕缩放
 	        settings.setSupportZoom(true);
 	        settings.setBuiltInZoomControls(true);
