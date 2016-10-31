@@ -53,10 +53,18 @@ public class Configer {
 	public static String WcfMethod_DoWork = "DoWork";
 	/**
 	 * 登录
+	 * <param name="logName">账号</param>
+     * <param name="pwd">密码</param>
 	 */
 	public static String WcfMethod_LoginService = "LoginService";
 	
-	
+
+	/**
+	 * 工厂入库
+	 * <param name="jsonStr"></param>
+	 */
+	public static String WcfMethod_TotalWareHouseEnter = "TotalWareHouseEnter";
+   
 	
 	
 	

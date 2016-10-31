@@ -188,6 +188,10 @@
             android:name=".ui.WebViewActivity"
             android:label="@string/title_activity_address_add" >
         </activity>
+       <activity
+            android:name=".ui.InActivity"
+            android:label="@string/title_activity_address_add" >
+        </activity>
         
         
     </application>

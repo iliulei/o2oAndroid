@@ -112,7 +112,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton meal,vegetables,fruit,grain,dry,reco;
+	private ImageButton inIbt,vegetables,fruit,grain,dry,reco;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -153,8 +153,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		findViewById();
 		
 		
-		meal = (ImageButton)findViewById(R.id.meal);
-		meal.setOnClickListener(indexClickListener);
+		inIbt = (ImageButton)findViewById(R.id.ibt_in);
+		inIbt.setOnClickListener(indexClickListener);
 		
 		vegetables = (ImageButton)findViewById(R.id.vegetables);
 		vegetables.setOnClickListener(indexClickListener);
@@ -180,7 +180,10 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		public void onClick(View v) {
 			switch (v.getId()) {
 			//摇一摇！
-			case R.id.meal:
+			case R.id.ibt_in:
+				Intent intent = new Intent(IndexActivity.this, InActivity.class);
+				startActivity(intent);
+				
 			/*	Bundle bundle = new Bundle();
 				bundle.putSerializable("category", "肉类");
 				Intent intent = new Intent(IndexActivity.this, GoodsListActivity.class);
