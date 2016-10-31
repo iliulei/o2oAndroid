@@ -64,7 +64,7 @@
     </LinearLayout>
  -->
        <!-- android:layout_below="@id/index_top_layout" -->
-    <com.freshO2O.widgets.AbScrollView
+    <com.ligao.widgets.AbScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/home_panicbuying_background"
@@ -80,8 +80,7 @@
             android:layout_gravity="top"
             android:orientation="vertical" >
 
-            <com.freshO2O.widgets.jazzviewpager.JazzyViewPager
-                android:id="@+id/index_product_images_container"
+            <com.ligao.widgets.jazzviewpager.JazzyViewPager               android:id="@+id/index_product_images_container"
                 android:layout_width="match_parent"
                 android:layout_height="196dp"
                 android:background="@color/white" />
@@ -498,6 +497,6 @@
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
-    </com.freshO2O.widgets.AbScrollView>
+    </com.ligao.widgets.AbScrollView>
 
 </RelativeLayout>

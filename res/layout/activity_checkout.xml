@@ -53,7 +53,7 @@
 		            android:layout_marginBottom="5dp"
 		            android:layout_below="@id/addressNext"/>
 		    </RelativeLayout>
-			<com.freshO2O.layout.NoScrollListView
+			<com.ligao.layout.NoScrollListView
 			    android:id="@+id/checkOutListView"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"/>
