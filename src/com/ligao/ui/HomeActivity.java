@@ -101,8 +101,8 @@ public class HomeActivity extends TabActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		getMenuInflater().inflate(R.menu.activity_menu, menu);
+		// TODO   隐藏home页面 设置目录  Leo.L 2016年10月31日 10:37:28
+		//getMenuInflater().inflate(R.menu.activity_menu, menu);  
 		return true;
 	}
 
