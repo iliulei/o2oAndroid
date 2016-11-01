@@ -192,6 +192,14 @@
             android:name=".ui.InActivity"
             android:label="@string/title_activity_address_add" >
         </activity>
+        <activity
+            android:name=".ui.BreakAJamActivity"
+            android:label="@string/title_activity_address_add" >
+        </activity>
+        <activity
+            android:name=".ui.InstallJamActivity"
+            android:label="@string/title_activity_address_add" >
+        </activity>
         
         
     </application>

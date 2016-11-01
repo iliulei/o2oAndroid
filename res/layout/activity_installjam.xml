@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:textSize="18sp"
-            android:text="入库"
+            android:text="组垛"
             android:textColor="#fff" />
     </RelativeLayout>
     
@@ -42,23 +42,37 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:orientation="vertical">
-        <TextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="产品编码"
-            android:textSize="20dp"
-            />
        <EditText 
-           android:id="@+id/edt_in_mNumber"
+           android:id="@+id/edt_number"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+           />
+       
+       <TextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="不在库存中的码会自动排除"
+            android:layout_marginTop="40dp"
+            android:textColor="#EE0000"
             android:textSize="20dp"
-           />
-        
+            android:gravity="center"
+            />
+        <TextView 
+            android:id="@+id/tv_scanNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="已扫描：0 (箱)"
+            android:layout_marginTop="5dp"
+            android:textColor="#EE0000"
+            android:textSize="20dp"
+            android:gravity="center"
+            />
     </LinearLayout>
     
     <Button
-         android:id="@+id/bt_submit"
+         android:id="@+id/bt_installjam"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_marginBottom="14dp"
@@ -67,12 +81,12 @@
          android:layout_marginTop="10dp"
          android:background="@drawable/android_title_bg"
          android:gravity="center"
-         android:text="确定"
+         android:text="组垛"
          android:textColor="#fff"
          android:textSize="20sp" />
     
  <Button
-         android:id="@+id/bt_DownloadOutOrder"
+         android:id="@+id/bt_save"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_marginBottom="14dp"
@@ -81,7 +95,7 @@
          android:layout_marginTop="10dp"
          android:background="@drawable/android_title_bg"
          android:gravity="center"
-         android:text="下载出库单"
+         android:text="保存"
          android:textColor="#fff"
          android:textSize="20sp" />
 

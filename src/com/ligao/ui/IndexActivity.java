@@ -112,7 +112,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton inIbt,vegetables,fruit,grain,dry,reco;
+	private ImageButton inIbt,vegetables,installJamIbt,breakAJamIbt,dry,reco;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -159,11 +159,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		vegetables = (ImageButton)findViewById(R.id.vegetables);
 		vegetables.setOnClickListener(indexClickListener);
 		
-		fruit = (ImageButton)findViewById(R.id.fruit);
-		fruit.setOnClickListener(indexClickListener);
+		installJamIbt = (ImageButton)findViewById(R.id.ibt_installJam);
+		installJamIbt.setOnClickListener(indexClickListener);
 		
-		grain = (ImageButton)findViewById(R.id.grain);
-		grain.setOnClickListener(indexClickListener);
+		breakAJamIbt = (ImageButton)findViewById(R.id.ibt_breakAJam);
+		breakAJamIbt.setOnClickListener(indexClickListener);
 		
 	/*	dry = (ImageButton)findViewById(R.id.dry);
 		dry.setOnClickListener(indexClickListener);
@@ -178,10 +178,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		
 		@Override
 		public void onClick(View v) {
+			Intent intent;
 			switch (v.getId()) {
 			//摇一摇！
 			case R.id.ibt_in:
-				Intent intent = new Intent(IndexActivity.this, InActivity.class);
+				 intent = new Intent(IndexActivity.this, InActivity.class);
 				startActivity(intent);
 				
 			/*	Bundle bundle = new Bundle();
@@ -199,7 +200,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				intent.putExtras(bundle);
 				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
-			case R.id.fruit:   
+			case R.id.ibt_installJam:   
+				intent = new Intent(IndexActivity.this, InstallJamActivity.class);
+				startActivity(intent);
 				/*bundle = new Bundle();
 				bundle.putSerializable("category", "水果");
 				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
@@ -207,7 +210,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
 				
-			case R.id.grain:
+			case R.id.ibt_breakAJam:
+				intent = new Intent(IndexActivity.this, BreakAJamActivity.class);
+				startActivity(intent);
 				/*bundle = new Bundle();
 				bundle.putSerializable("category", "谷物");
 				intent = new Intent(IndexActivity.this, GoodsListActivity.class);

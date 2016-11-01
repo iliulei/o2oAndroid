@@ -61,5 +61,10 @@ public class Constants {
 		 */
 		public static final String SERVER_SETTING_PROJECTNAME = "server_setting_projectname";
 		
+		/**
+		 * 组垛箱码集合
+		 */
+		public static final String INSTALLJAM_BOXCODES = "installjam_boxcodes";
+		
 	
 }

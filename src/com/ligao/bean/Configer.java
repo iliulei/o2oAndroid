@@ -21,8 +21,6 @@ public class Configer {
 		String serverAddress = "http://"+serversettingsaddress+":"+port+"/"+projectname;
 		return serverAddress;
 	}
-	
-	
 
 	//命名空间(http://tempuri.org/为默认)
 	public static String NAMESPACE = "http://tempuri.org/";
@@ -45,8 +43,6 @@ public class Configer {
 		return "http://"+serversettingsaddress.trim()+":"+port.trim()+Configer.SVCNAME;
 	}
 	
-	
-	
 	/**
 	 * 测试连接是否畅通
 	 */
@@ -57,15 +53,60 @@ public class Configer {
      * <param name="pwd">密码</param>
 	 */
 	public static String WcfMethod_LoginService = "LoginService";
-	
-
 	/**
-	 * 工厂入库
+	 * 工厂入库(未使用)
 	 * <param name="jsonStr"></param>
 	 */
 	public static String WcfMethod_TotalWareHouseEnter = "TotalWareHouseEnter";
-   
+	/**
+	 * 下载出库单
+	 * mNode  (工程节点编码，读取登陆人的DeptCode)
+	 * BillType（默认0）
+	 */
+	public static String WcfMethod_DownLoadOutOrder = "DownLoadOutOrder";
 	
+	/**
+	 * 保存出库单
+	 * outWareHouseJson
+	 * 1
+	 * /已经修改为新版本的出库，该出库不于入库相关联  1与入库无关，0有关
+	 */
+	public static String WcfMethod_SaveOutWareHouse = "SaveOutWareHouse";
 	
+	/**
+	 * 垛管理
+	 * type
+	 * stackStrs
+	 */
+	public static String WcfMethod_StackManage = "StackManage";
+	
+	/**
+	 * 查询一垛的数量
+	 * boxCode
+	 */
+	public static String WcfMethod_QueryPileCount = "QueryPileCount";
+	
+	/**
+	 * 获取一垛的所有垛码
+	 * boxCode
+	 */
+	public static String WcfMethod_QueryPileCodes = "QueryPileCodes";
+	/**
+	 * 获取一垛的所有垛码
+	 * code
+	 */
+	public static String WcfMethod_ExistsBarCode = "ExistsBarCode";
+	
+	/**
+	 * 拆箱
+	 * traceCodes   string[] 
+	 */
+	public static String WcfMethod_TraceDevanningByArray = "TraceDevanningByArray";
+	/**
+	 * 重组
+	 * boxCode
+	 * traceCodes string[] 
+	 */
+	public static String WcfMethod_TraceReerection = "TraceReerection";
 	
 }

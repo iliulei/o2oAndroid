@@ -333,7 +333,7 @@
                         android:orientation="vertical" >
 
                         <ImageButton
-                            android:id="@+id/fruit"
+                            android:id="@+id/ibt_installJam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
@@ -355,7 +355,7 @@
                         android:orientation="vertical" >
 
                         <ImageButton
-                            android:id="@+id/grain"
+                            android:id="@+id/ibt_breakAJam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"

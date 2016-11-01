@@ -38,7 +38,7 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 	private EditText  mNumberEdt;
 	
 	private TextView goBack;
-	private Button sumbitBt;
+	private Button sumbitBt,downloadOutOrderBt;
 	
 	
 	@Override
@@ -50,10 +50,12 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 		
 		
 		sumbitBt = (Button)findViewById(R.id.bt_submit);
+		downloadOutOrderBt = (Button)findViewById(R.id.bt_DownloadOutOrder);
 		goBack = (TextView) findViewById(R.id.go_back);
 		mNumberEdt = (EditText) findViewById(R.id.edt_in_mNumber);
 		
 		sumbitBt.setOnClickListener(this);
+		downloadOutOrderBt.setOnClickListener(this);
 		goBack.setOnClickListener(this);
 	}
 
@@ -74,6 +76,15 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 		ToastUtil.showToast(this, "确定");
 	}
 	
+	/**
+	 * 下载出库单
+	 */
+	private void download() {
+		new Thread(getOutOrderJson).start();
+		ToastUtil.showToast(this, "下载出库单");
+		
+	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -82,6 +93,8 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 		case R.id.bt_submit:
 			submit();
 			break;
+		case R.id.bt_DownloadOutOrder:
+			download();
 		case R.id.go_back:
 			finish();
 			break;
@@ -89,6 +102,7 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 			break;
 		}
 	}
+
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			if (msg.what == 0x00) {
@@ -127,7 +141,6 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 	private String result;
 	private String myurl,soap_action;
 	private Runnable getJson = new Runnable() {
-
 		public void run() {
 			try {
 				SoapObject rpc = new SoapObject(Configer.NAMESPACE, Configer.WcfMethod_TotalWareHouseEnter);
@@ -141,6 +154,27 @@ public class InActivity extends BaseActivity  implements OnClickListener{
 				else
 					handler.sendEmptyMessage(0x00);
 				
+			} catch (Exception e) {
+				handler.sendEmptyMessage(0x01);
+			}
+		}
+	};
+	
+	private Runnable getOutOrderJson = new Runnable() {
+		public void run() {
+			try {
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE, Configer.WcfMethod_DownLoadOutOrder);
+				MyApplication application= (MyApplication)getApplication();
+				rpc.addProperty("mNode", application.getUserInfo().getDeptCode());
+				rpc.addProperty("BillType", 0);
+		    	myurl = Configer.getWcfUrl(getApplicationContext());
+		    	soap_action = Configer.SOAPACTION_FRONT+Configer.WcfMethod_DownLoadOutOrder;
+		    	result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
+				//result = GetJson(myurl, params);
+				if("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x00);
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}

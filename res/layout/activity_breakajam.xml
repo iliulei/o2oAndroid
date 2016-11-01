@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:textSize="18sp"
-            android:text="入库"
+            android:text="拆垛"
             android:textColor="#fff" />
     </RelativeLayout>
     
@@ -45,20 +45,33 @@
         <TextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="产品编码"
+            android:text="扫描整垛中任意一个条码即可"
             android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             />
        <EditText 
-           android:id="@+id/edt_in_mNumber"
+           android:id="@+id/edt_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
+            android:layout_marginTop="20dp"
            />
-        
+       
+        <TextView 
+            android:id="@+id/tv_nowNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="当前垛数量：0"
+            android:layout_marginTop="80dp"
+            android:textColor="#EE0000"
+            android:textSize="20dp"
+            android:gravity="center"
+            />
     </LinearLayout>
     
     <Button
-         android:id="@+id/bt_submit"
+         android:id="@+id/bt_breakajam"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_marginBottom="14dp"
@@ -67,12 +80,12 @@
          android:layout_marginTop="10dp"
          android:background="@drawable/android_title_bg"
          android:gravity="center"
-         android:text="确定"
+         android:text="拆垛"
          android:textColor="#fff"
          android:textSize="20sp" />
     
  <Button
-         android:id="@+id/bt_DownloadOutOrder"
+         android:id="@+id/bt_jamNumber"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_marginBottom="14dp"
@@ -81,7 +94,7 @@
          android:layout_marginTop="10dp"
          android:background="@drawable/android_title_bg"
          android:gravity="center"
-         android:text="下载出库单"
+         android:text="垛数量"
          android:textColor="#fff"
          android:textSize="20sp" />
 
