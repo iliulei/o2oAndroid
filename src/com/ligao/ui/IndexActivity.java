@@ -112,7 +112,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton inIbt,vegetables,installJamIbt,breakAJamIbt,dry,reco;
+	private ImageButton inIbt,outIbt,installJamIbt,breakAJamIbt,dry,reco;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -156,8 +156,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		inIbt = (ImageButton)findViewById(R.id.ibt_in);
 		inIbt.setOnClickListener(indexClickListener);
 		
-		vegetables = (ImageButton)findViewById(R.id.vegetables);
-		vegetables.setOnClickListener(indexClickListener);
+		outIbt = (ImageButton)findViewById(R.id.ibt_out);
+		outIbt.setOnClickListener(indexClickListener);
 		
 		installJamIbt = (ImageButton)findViewById(R.id.ibt_installJam);
 		installJamIbt.setOnClickListener(indexClickListener);
@@ -192,7 +192,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
 				
-			case R.id.vegetables:
+			case R.id.ibt_out:
+				intent = new Intent(IndexActivity.this, OutActivity.class);
+				startActivity(intent);
 			/*	bundle = new Bundle();
 				bundle.putSerializable("category", "蔬菜");
 

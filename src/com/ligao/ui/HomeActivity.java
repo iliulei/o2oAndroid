@@ -56,7 +56,7 @@ public class HomeActivity extends TabActivity {
 
 		Intent i_main = new Intent(this, IndexActivity.class);
 		Intent i_search = new Intent(this, MoreActivity.class);
-		Intent i_category = new Intent(this, CategoryActivity.class);
+		Intent i_category = new Intent(this, OutActivity.class);
 		Intent i_cart = new Intent(this, ShopActivity.class);
 		Intent i_personal = new Intent(this, PersonalActivity.class);
 

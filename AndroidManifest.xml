@@ -57,7 +57,7 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.CategoryActivity"
+            android:name=".ui.OutActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme" />
         <activity

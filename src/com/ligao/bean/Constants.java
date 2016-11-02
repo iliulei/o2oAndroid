@@ -48,6 +48,7 @@ public class Constants {
 	// 缓存图片路径
 		public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/images2/";
 		
+		//config内字段名称
 		/**
 		 * 服务器地址
 		 */
@@ -66,5 +67,9 @@ public class Constants {
 		 */
 		public static final String INSTALLJAM_BOXCODES = "installjam_boxcodes";
 		
+		/**
+		 * 出库单号
+		 */
+		public static final String OUT_ORDERS = "out_orders";
 	
 }

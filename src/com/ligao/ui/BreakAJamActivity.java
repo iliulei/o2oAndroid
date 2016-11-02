@@ -170,8 +170,6 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 				
 			} else if (msg.what == 0x01) {
 				ToastUtil.showToast(BreakAJamActivity.this, "服务器链接错误!");
-				/*Toast.makeText(getApplicationContext(), "获取失败",
-						Toast.LENGTH_LONG).show();*/
 			}
 		}
 	};

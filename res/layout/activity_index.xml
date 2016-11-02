@@ -301,7 +301,7 @@
                         android:orientation="vertical" >
 
                         <ImageButton
-                            android:id="@+id/vegetables"
+                            android:id="@+id/ibt_out"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
