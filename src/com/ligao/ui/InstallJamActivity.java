@@ -39,6 +39,11 @@ import com.ligao.utils.SpUtil;
 import com.ligao.utils.ToastUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+/**
+ * 组垛
+ * @author Administrator
+ *
+ */
 public class InstallJamActivity extends BaseActivity  implements OnClickListener{
 	
 	private EditText  mNumberEdt;
@@ -125,7 +130,10 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 	 */
 	private void installJam(){
 		new Thread(getInstallJamJson).start();
-		ToastUtil.showToast(this, "组垛");
+	}
+	private void installJamExecute(String re){
+		ToastUtil.showToast(getApplicationContext(), re);
+		scanNumberTv.setText(re);
 	}
 	
 	/**
@@ -156,26 +164,13 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			if (msg.what == 0x00) {
+			if (msg.what == 0x02) {
 				Log.v("PostGetJson", "" + result);
-				
 				if(null != result){
 					try {
-						JSONObject json= new JSONObject(result);  
-						String re = (String)json.get("Message");
-						Object JsonStr = (Object)json.get("JsonStr");
-						if(!JsonStr.equals(null)){
-							json=  new JSONObject(JsonStr.toString());
-							MyApplication application= (MyApplication)getApplication();
-							User user = new User();
-							user.setName((String)json.get("Name"));
-							user.setLoginName((String)json.get("LoginName"));
-							user.setDeptCode((String)json.get("DeptCode"));
-							user.setDeptName((String)json.get("DeptName"));
-							application.setUserInfo(user);
-						}
-						//execute(re);
-					} catch (JSONException e) {
+						String re = result;
+						installJamExecute(re);
+					} catch (Exception e) {
 						e.printStackTrace();
 					}  
 				}else{
@@ -206,29 +201,6 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 					handler.sendEmptyMessage(0x01);
 				else
 					handler.sendEmptyMessage(0x02);
-			} catch (Exception e) {
-				handler.sendEmptyMessage(0x01);
-			}
-		}
-	};
-	
-	private Runnable getSaveJson = new Runnable() {
-		public void run() {
-			try {
-				SoapObject rpc = new SoapObject(Configer.NAMESPACE, Configer.WcfMethod_DownLoadOutOrder);
-				
-				MyApplication application= (MyApplication)getApplication();
-				rpc.addProperty("mNode", application.getUserInfo().getDeptCode());
-				rpc.addProperty("BillType", 0);
-				
-		    	myurl = Configer.getWcfUrl(getApplicationContext());
-		    	soap_action = Configer.SOAPACTION_FRONT+Configer.WcfMethod_DownLoadOutOrder;
-		    	result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
-				//result = GetJson(myurl, params);
-				if("error".equals(result))
-					handler.sendEmptyMessage(0x01);
-				else
-					handler.sendEmptyMessage(0x03);
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}

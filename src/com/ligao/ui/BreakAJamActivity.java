@@ -27,10 +27,15 @@ import com.ligao.ui.base.BaseActivity;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.ToastUtil;
 
+/**
+ * 拆垛
+ * @author Administrator
+ *
+ */
 public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 	
 	private EditText  mNumberEdt;
-	private TextView goBack;
+	private TextView goBack,nowNumberTv;
 	private Button jamNumberBt,breakajamBt;
 	private BroadcastReceiver mReceiver;
     private IntentFilter mFilter;
@@ -44,6 +49,7 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 		breakajamBt = (Button)findViewById(R.id.bt_breakajam);
 		jamNumberBt = (Button)findViewById(R.id.bt_jamNumber);
 		goBack = (TextView) findViewById(R.id.go_back);
+		nowNumberTv =  (TextView) findViewById(R.id.tv_nowNumber);
 		mNumberEdt = (EditText) findViewById(R.id.edt_number);
 		breakajamBt.setOnClickListener(this);
 		jamNumberBt.setOnClickListener(this);
@@ -83,7 +89,10 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 	 */
 	private void breakAJam(){
 		new Thread(getBreakAJamJson).start();
-		ToastUtil.showToast(this, "拆垛");
+	}
+	private void breakAJamExecute(String re){
+		ToastUtil.showToast(getApplicationContext(), re);
+		nowNumberTv.setText(re);
 	}
 	
 	/**
@@ -91,16 +100,17 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 	 */
 	private void jamNumber() {
 		new Thread(getJamNumberJson).start();
-		ToastUtil.showToast(this, "查询垛数量");
 	}
 	private void jamNumberExecute(String re,String jamNumber){
 		if("查询成功".equals(re)){
 			ToastUtil.showToast(getApplicationContext(), re);
-			breakajamBt.setText("当前垛数量："+jamNumber);
+			nowNumberTv.setText("当前垛数量："+jamNumber);
 		}else if("箱码不存在".equals(re)){
 			ToastUtil.showToast(getApplicationContext(), re);
+			nowNumberTv.setText(re);
 		}else if("此箱码未分垛".equals(re)){
 			ToastUtil.showToast(getApplicationContext(), re);
+			nowNumberTv.setText(re);
 		}
 	}
 	
@@ -129,21 +139,9 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 				
 				if(null != result){
 					try {
-						JSONObject json= new JSONObject(result);  
-						String re = (String)json.get("Message");
-						Object JsonStr = (Object)json.get("JsonStr");
-						if(!JsonStr.equals(null)){
-							json=  new JSONObject(JsonStr.toString());
-							MyApplication application= (MyApplication)getApplication();
-							User user = new User();
-							user.setName((String)json.get("Name"));
-							user.setLoginName((String)json.get("LoginName"));
-							user.setDeptCode((String)json.get("DeptCode"));
-							user.setDeptName((String)json.get("DeptName"));
-							application.setUserInfo(user);
-						}
-						//execute(re);
-					} catch (JSONException e) {
+						String re = result;
+						breakAJamExecute(re);
+					} catch (Exception e) {
 						e.printStackTrace();
 					}  
 				}else{
