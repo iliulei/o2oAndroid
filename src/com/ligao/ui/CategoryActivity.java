@@ -60,7 +60,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class CategoryActivity extends Activity  {
 
 	
-	private Spinner mySpinner1;
 //	private TextView baseDataMaintainBack;
 	private TextView cate ;
 	String category = "";
@@ -86,9 +85,7 @@ public class CategoryActivity extends Activity  {
 //		cate = (TextView)findViewById(R.id.category);
 //		cate.setText(category);
 		
-		mySpinner1 = (Spinner) findViewById(R.id.spinner01);
 		
-		showSpinner1();
 		
 		getData();
 		
@@ -112,59 +109,7 @@ public class CategoryActivity extends Activity  {
 		listview.setOnItemClickListener(new ItemClickListener());
 	}
 	
-	public void showSpinner1() {
-		// 第一步：添加一个下拉列表项的list，这里添加的项就是下拉列表的菜单项
-		list.add("请选择分类");
-		list.add("肉类");
-		list.add("蔬菜");
-		list.add("水果");
-		list.add("干货");
-		list.add("大米");
-		// 第二步：为下拉列表定义一个适配器，这里就用到里前面定义的list。
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, list);
-		// 第三步：为适配器设置下拉列表下拉时的菜单样式。 simple_spinner_item
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		// 第四步：将适配器添加到下拉列表上
-		mySpinner1.setAdapter(adapter);
-		// 第五步：为下拉列表设置各种事件的响应，这个事响应菜单被选中
-		mySpinner1
-				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-					public void onItemSelected(AdapterView<?> arg0, View arg1,
-							int position, long arg3) {
-						/* 将所选mySpinner 的值带入myTextView 中 */
-						category = adapter.getItem(position);
-						/* 将mySpinner 显示 */
-						arg0.setVisibility(View.VISIBLE);
-						
-						getData();
-						Log.e("", "aaaaaaaaaaaaaaaaaaaaaaaa+44444444444");
-					}
 
-					public void onNothingSelected(AdapterView<?> arg0) {
-//						myTextView.setText("NONE");
-						arg0.setVisibility(View.VISIBLE);
-						Log.e("", "aaaaaaaaaaaaaaaaaaaaaaaa+333333333");
-					}
-				});
-		/* 下拉菜单弹出的内容选项触屏事件处理 */
-//		mySpinner1.setOnTouchListener(new Spinner.OnTouchListener() {
-//			public boolean onTouch(View v, MotionEvent event) {
-//				/* 将mySpinner 隐藏，不隐藏也可以，看自己爱好 */
-//				// v.setVisibility(View.INVISIBLE);
-//				Log.e("", "aaaaaaaaaaaaaaaaaaaaaaaa+111111111");
-//				return false;
-//			}
-//		});
-		/* 下拉菜单弹出的内容选项焦点改变事件处理 */
-		mySpinner1
-				.setOnFocusChangeListener(new Spinner.OnFocusChangeListener() {
-					public void onFocusChange(View v, boolean hasFocus) {
-						v.setVisibility(View.VISIBLE);
-						Log.e("", "aaaaaaaaaaaaaaaaaaaaaaaa+222222222");
-					}
-				});
-	}
 	
 	private void getData(){
 		params =new ArrayList<NameValuePair>();
