@@ -200,7 +200,10 @@
             android:name=".ui.InstallJamActivity"
             android:label="@string/title_activity_address_add" >
         </activity>
-        
+        <activity
+            android:name=".ui.OutProductActivity"
+            android:label="@string/title_activity_address_add" >
+        </activity>
         
     </application>
 

@@ -60,23 +60,24 @@ public class Order {
 	 */
 	public  String getStateName(){
 		String stateName="默认";
-		switch (State) {
-		case "0":
+		String stateStatus = getState();
+		switch (Integer.parseInt(stateStatus.split("\\..")[0])) {
+		case 0:
 			stateName = "默认";
 			break;
-		case "1":
+		case 1:
 			stateName = "已导出";
 			break;
-		case "2":
+		case 2:
 			stateName = "已导入";
 			break;
-		case "3":
+		case 3:
 			stateName = "已同步";
 			break;
-		case "4":
+		case 4:
 			stateName = "已入库";
 			break;
-		case "5":
+		case 5:
 			stateName = "已下载";
 			break;
 		default:

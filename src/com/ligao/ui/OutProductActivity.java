@@ -47,6 +47,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ import com.ligao.bean.Constants;
 import com.ligao.entity.Goods;
 import com.ligao.entity.JsonInfo;
 import com.ligao.entity.Order;
+import com.ligao.entity.Product;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.SpUtil;
 import com.ligao.utils.ToastUtil;
@@ -70,7 +72,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author Administrator
  *
  */
-public class OutActivity extends Activity  implements OnClickListener {
+public class OutProductActivity extends Activity  implements OnClickListener {
 
 	
 //	private TextView baseDataMaintainBack;
@@ -78,20 +80,20 @@ public class OutActivity extends Activity  implements OnClickListener {
 	String category = "";
 	private int LOGIN_CODE = 100;
 	private ShopAdapter adapter;		//自定义适配器
-	
+	private EditText  mNumberEdt;
 	private ListView listview;
 	private TextView gobackTv;
 	private Button operationBt;
 	List<Goods> recomendGoods = new ArrayList<Goods>();
 	List<Order> outOrderList = new ArrayList<Order>();
-	
+	List<Product> productList = new ArrayList<Product>();
 	private List<String> list = new ArrayList<String>();
 	private Gson gson = new Gson();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.out_order_list);
+		setContentView(R.layout.out_product_list);
 		
 //		category = (String)getIntent().getSerializableExtra("category");
 		
@@ -100,13 +102,16 @@ public class OutActivity extends Activity  implements OnClickListener {
 //		cate = (TextView)findViewById(R.id.category);
 //		cate.setText(category);
 		
+		productList = (List<Product>) getIntent().getSerializableExtra("productList");
 		
 		gobackTv= (TextView) findViewById(R.id.go_back);
 		operationBt = (Button) findViewById(R.id.bt_operation);
+		mNumberEdt = (EditText) findViewById(R.id.edt_number);
+																			
 		gobackTv.setOnClickListener(this);
 		operationBt.setOnClickListener(this);
-		getData();
-		
+		//getData();
+		initView();
 		
 	}
 
@@ -118,7 +123,7 @@ public class OutActivity extends Activity  implements OnClickListener {
 
 		listview = (ListView) this.findViewById(R.id.listview);
 		
-		adapter = new ShopAdapter(this,outOrderList,handler,R.layout.category_goods_list_main_item);
+		adapter = new ShopAdapter(this,productList,handler,R.layout.category_goods_list_main_item);
 		listview.setAdapter(adapter);
 		
 		
@@ -226,7 +231,7 @@ public class OutActivity extends Activity  implements OnClickListener {
 				}
 				
 			}else if (msg.what == 0x01) {
-				ToastUtil.showToast(OutActivity.this, "服务器链接错误!");
+				ToastUtil.showToast(OutProductActivity.this, "服务器链接错误!");
 			}
 		}
 	};
@@ -319,25 +324,52 @@ public class OutActivity extends Activity  implements OnClickListener {
 			System.out.println("position : "+position);
 
 			Bundle bundle = new Bundle();
-			bundle.putSerializable("productList", (Serializable) outOrderList.get(position).getWwaybillProducts() );
-			Intent intent = new Intent(OutActivity.this, OutProductActivity.class);
+			bundle.putSerializable("goods", recomendGoods.get(position));
+
+			Intent intent = new Intent(OutProductActivity.this, GoodsMoreInfoActivity.class);
 			intent.putExtras(bundle);
-			startActivity(intent);
-			//startActivityForResult(intent, LOGIN_CODE);
+			startActivityForResult(intent, LOGIN_CODE);
 			
 		}
 	}
 
+	/**
+	* 从服务器取图片
+	*http://bbs.3gstdy.com
+	* @param url
+	* @return
+	*/
+	public static Bitmap getHttpBitmap(String url) {
+	     URL myFileUrl = null;
+	     Bitmap bitmap = null;
+	     try {
+	          myFileUrl = new URL(url);
+	     } catch (MalformedURLException e) {
+	          e.printStackTrace();
+	     }
+	     try {
+	          HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
+	          conn.setConnectTimeout(0);
+	          conn.setDoInput(true);
+	          conn.connect();
+	          InputStream is = conn.getInputStream();
+	          bitmap = BitmapFactory.decodeStream(is);
+	          is.close();
+	     } catch (IOException e) {
+	          e.printStackTrace();
+	     }
+	     return bitmap;
+	}
 	
 	class ShopAdapter extends BaseAdapter {
 
 		private Handler mHandler;
 		private int resourceId;				//适配器视图资源ID
 		private Context context;			//上下午对象
-		private List<Order> list;		//数据集合List
+		private List<Product> list;		//数据集合List
 		private LayoutInflater inflater;	//布局填充器
 		@SuppressLint("UseSparseArrays")
-		public ShopAdapter(Context context,List<Order> list
+		public ShopAdapter(Context context,List<Product> list
 				,Handler mHandler,int resourceId){
 			this.list = list;
 			this.context = context;
@@ -363,7 +395,7 @@ public class OutActivity extends Activity  implements OnClickListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			Order bean = list.get(position);
+			Product bean = list.get(position);
 			ViewHolder holder = null;
 			if(convertView == null){
 				convertView = inflater.inflate(resourceId,null);
@@ -381,12 +413,16 @@ public class OutActivity extends Activity  implements OnClickListener {
 			
 			System.out.println("pic : "+ bean.getWId());
 			
-			
-			holder.shop_name.setText("订单号:"+bean.getWCode());
-			holder.shop_description.setText("状态:"+bean.getStateName());
+//			holder.shop_photo.setImageBitmap(returnBitMap(bean.getGPic())); 
 			
 			
-			holder.shop_price.setText("接收地址:"+bean.getOName());
+			//ImageLoader.getInstance().displayImage(bean.getWId(), holder.shop_photo);
+			
+			holder.shop_name.setText("产品名称:"+bean.getPName());
+			holder.shop_description.setText("发货量(箱):"+bean.getPlanAmount());
+			
+			
+			holder.shop_price.setText("规格:"+bean.getSpec());
 			return convertView;
 		}
 		
@@ -399,7 +435,27 @@ public class OutActivity extends Activity  implements OnClickListener {
 		
 	}
 
-
+	public Bitmap returnBitMap(String url) {
+		URL myFileUrl = null;
+		Bitmap bitmap = null;
+		try {
+			myFileUrl = new URL(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		try {
+			HttpURLConnection conn = (HttpURLConnection) myFileUrl
+					.openConnection();
+			conn.setDoInput(true);
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			bitmap = BitmapFactory.decodeStream(is);
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
 	
 
 	// 事件点击监听器
@@ -408,7 +464,7 @@ public class OutActivity extends Activity  implements OnClickListener {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.list: // 返回
-				OutActivity.this.finish();
+				OutProductActivity.this.finish();
 				break;
 			}
 		}
@@ -459,32 +515,49 @@ public class OutActivity extends Activity  implements OnClickListener {
 	 * 操作按钮点击事件
 	 */
 	private void operation() {
-		 new AlertDialog.Builder(OutActivity.this).setTitle("操作提示")//设置对话框标题  
+		 new AlertDialog.Builder(OutProductActivity.this).setTitle("操作提示")//设置对话框标题  
 		  
 	     .setMessage("请选择操作类型！")//设置显示的内容  
 	  
-	     .setPositiveButton("下载出库单",new DialogInterface.OnClickListener() {//添加下载出库单按钮  
+	     .setPositiveButton("垛数量",new DialogInterface.OnClickListener() {
 	  
 	         @Override  
 	  
-	         public void onClick(DialogInterface dialog, int which) {//下载出库单按钮的响应事件  
-	        	 new Thread(getOutOrderJson).start();
+	         public void onClick(DialogInterface dialog, int which) {
+	        	 new Thread(getJamNumberJson).start();
 	         }  
 	  
-	     }).setNegativeButton("加载出库单",new DialogInterface.OnClickListener() {//添加加载出库单按钮  
+	     }).setNegativeButton("出库",new DialogInterface.OnClickListener() {
 	  
 	         @Override  
 	  
 	         public void onClick(DialogInterface dialog, int which) {//响应事件  
-	        	 loadOutOrder();
-	        	 ToastUtil.showToast(getApplicationContext(), "加载");
-	  
+	        	 new Thread(getJamNumberJson).start();
 	         }
-
-
-	  
 	     }).show();//在按键响应事件中显示此对话框  
 	  
 	}
+	
+	/**
+	 * 获取垛数量
+	 */
+	private Runnable getJamNumberJson = new Runnable() {
+		public void run() {
+			try {
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE, Configer.WcfMethod_QueryPileCount);
+				rpc.addProperty("boxCode", mNumberEdt.getText().toString().trim());
+		    	myurl = Configer.getWcfUrl(getApplicationContext());
+		    	soap_action = Configer.SOAPACTION_FRONT+Configer.WcfMethod_QueryPileCount;
+		    	result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
+				//result = GetJson(myurl, params);
+				if("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x03);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(0x01);
+			}
+		}
+	};
 
 }

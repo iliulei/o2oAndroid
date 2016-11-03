@@ -1,5 +1,6 @@
 package com.ligao.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author Administrator
  *
  */
-public class Product {
+public class Product implements Serializable{
 	
 	
 	/**
