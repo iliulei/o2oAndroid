@@ -270,25 +270,23 @@
                     android:baselineAligned="false"
                     android:gravity="center"
                     android:orientation="horizontal" >
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical" >
-
                         <ImageButton
-                            android:id="@+id/ibt_in"
+                            android:id="@+id/ibt_out"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/arrow_left_64" />
-					
+                            android:src="@drawable/chuku" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="入库"
+                            android:text="出库"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -299,18 +297,17 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical" >
-
-                        <ImageButton
-                            android:id="@+id/ibt_out"
+   <ImageButton
+                            android:id="@+id/ibt_installJam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/arrow_right_64" />
+                            android:src="@drawable/zuduo" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="出库"
+                            android:text="组垛"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -332,17 +329,17 @@
                         android:gravity="center"
                         android:orientation="vertical" >
 
-                        <ImageButton
-                            android:id="@+id/ibt_installJam"
+                       <ImageButton
+                            android:id="@+id/ibt_breakAJam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/arrow_up_64" />
+                            android:src="@drawable/chaiduo" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="组垛"
+                            android:text="拆垛"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>
@@ -355,16 +352,16 @@
                         android:orientation="vertical" >
 
                         <ImageButton
-                            android:id="@+id/ibt_breakAJam"
+                            android:id="@+id/ibt_exit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/app_home_shortcuts_button_selector"
-                            android:src="@drawable/arrow_down_64" />
+                            android:src="@drawable/exit" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="拆垛"
+                            android:text="退出"
                             android:textColor="@color/black"
                             android:textSize="@dimen/micro_text_size" />
                     </LinearLayout>

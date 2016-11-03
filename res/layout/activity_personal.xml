@@ -124,7 +124,7 @@
                         android:layout_alignTop="@+id/avatar"
                         android:layout_margin="11dip"
                         android:scaleType="fitXY"
-                        android:src="@drawable/slt" />
+                        android:src="@drawable/milk" />
 
                     <RelativeLayout
                         android:layout_width="fill_parent"

@@ -112,7 +112,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	private MyAdapter MyAdapter;
 	
-	private ImageButton inIbt,outIbt,installJamIbt,breakAJamIbt,dry,reco;
+	private ImageButton inIbt,outIbt,installJamIbt,breakAJamIbt,exitIbt,dry,reco;
 	
 	
 	List<Goods> recomendGoods = new ArrayList<Goods>();
@@ -153,8 +153,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		findViewById();
 		
 		
-		inIbt = (ImageButton)findViewById(R.id.ibt_in);
-		inIbt.setOnClickListener(indexClickListener);
+		exitIbt = (ImageButton)findViewById(R.id.ibt_exit);
+		exitIbt.setOnClickListener(indexClickListener);
 		
 		outIbt = (ImageButton)findViewById(R.id.ibt_out);
 		outIbt.setOnClickListener(indexClickListener);
@@ -180,65 +180,23 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		public void onClick(View v) {
 			Intent intent;
 			switch (v.getId()) {
-			//摇一摇！
-			case R.id.ibt_in:
-				 intent = new Intent(IndexActivity.this, InActivity.class);
-				startActivity(intent);
-				
-			/*	Bundle bundle = new Bundle();
-				bundle.putSerializable("category", "肉类");
-				Intent intent = new Intent(IndexActivity.this, GoodsListActivity.class);
-				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);*/
+			//退出
+			case R.id.ibt_exit:
+				finish();
 				break;
-				
 			case R.id.ibt_out:
-				intent = new Intent(IndexActivity.this, OutActivity.class);
-				startActivity(intent);
-			/*	bundle = new Bundle();
-				bundle.putSerializable("category", "蔬菜");
-
-				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
-				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);*/
+				//intent = new Intent(IndexActivity.this, OutActivity.class);
+				//startActivity(intent);
+				ToastUtil.showToast(getApplicationContext(), "开发中，敬请期待！");
 				break;
 			case R.id.ibt_installJam:   
 				intent = new Intent(IndexActivity.this, InstallJamActivity.class);
 				startActivity(intent);
-				/*bundle = new Bundle();
-				bundle.putSerializable("category", "水果");
-				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
-				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
-				
 			case R.id.ibt_breakAJam:
 				intent = new Intent(IndexActivity.this, BreakAJamActivity.class);
 				startActivity(intent);
-				/*bundle = new Bundle();
-				bundle.putSerializable("category", "谷物");
-				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
-				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);*/
 				break;
-		/*	case R.id.dry:
-				bundle = new Bundle();
-				bundle.putSerializable("category", "干货");
-
-				intent = new Intent(IndexActivity.this, GoodsListActivity.class);
-				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
-				break;
-				
-			case R.id.reco:
-//				bundle = new Bundle();
-//				bundle.putSerializable("category", "干货");
-
-				intent = new Intent(IndexActivity.this, CookBookListActivity.class);
-//				intent.putExtras(bundle);
-				startActivityForResult(intent, LOGIN_CODE);
-				break;*/
-
 			default:
 				break;
 			}
