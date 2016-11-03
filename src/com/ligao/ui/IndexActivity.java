@@ -151,25 +151,14 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		initData();
 
 		findViewById();
-		
-		
 		exitIbt = (ImageButton)findViewById(R.id.ibt_exit);
 		exitIbt.setOnClickListener(indexClickListener);
-		
 		outIbt = (ImageButton)findViewById(R.id.ibt_out);
 		outIbt.setOnClickListener(indexClickListener);
-		
 		installJamIbt = (ImageButton)findViewById(R.id.ibt_installJam);
 		installJamIbt.setOnClickListener(indexClickListener);
-		
 		breakAJamIbt = (ImageButton)findViewById(R.id.ibt_breakAJam);
 		breakAJamIbt.setOnClickListener(indexClickListener);
-		
-	/*	dry = (ImageButton)findViewById(R.id.dry);
-		dry.setOnClickListener(indexClickListener);
-		
-		reco = (ImageButton)findViewById(R.id.reco);
-		reco.setOnClickListener(indexClickListener);*/
 		
 	}
 	
@@ -185,8 +174,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				finish();
 				break;
 			case R.id.ibt_out:
-				//intent = new Intent(IndexActivity.this, OutActivity.class);
-				//startActivity(intent);
+				/*intent = new Intent(IndexActivity.this, OutActivity.class);
+				startActivity(intent);*/
 				ToastUtil.showToast(getApplicationContext(), "开发中，敬请期待！");
 				break;
 			case R.id.ibt_installJam:   

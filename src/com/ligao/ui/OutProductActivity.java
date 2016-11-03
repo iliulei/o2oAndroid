@@ -31,9 +31,11 @@ import org.ksoap2.serialization.SoapObject;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -78,7 +80,6 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	// private TextView baseDataMaintainBack;
 	private TextView cate;
 	String category = "";
-	private int LOGIN_CODE = 100;
 	private ShopAdapter adapter; // 自定义适配器
 	private EditText mNumberEdt;
 	private ListView listview;
@@ -89,7 +90,9 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	List<Product> productList = new ArrayList<Product>();
 	private List<String> list = new ArrayList<String>();
 	private Gson gson = new Gson();
-
+	private BroadcastReceiver mReceiver;
+    private IntentFilter mFilter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,6 +105,19 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		gobackTv.setOnClickListener(this);
 		operationBt.setOnClickListener(this);
 		initView();
+		
+		//---广播begin---
+	    mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //此处获取扫描结果信息
+                final String scanResult = intent.getStringExtra("EXTRA_SCAN_DATA");
+                mNumberEdt.setText(scanResult);
+            }
+        };
+        mFilter = new IntentFilter("ACTION_BAR_SCAN");
+      //---广播end---
+		
 	}
 
 	private void initView() {
@@ -117,23 +133,48 @@ public class OutProductActivity extends Activity implements OnClickListener {
 
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			if (msg.what == 0x02) {// 下载出库单
-				if (null != result) {
+			if (msg.what == 0x02) {// 查询垛数量
+				if(null != result){
 					try {
-						JsonInfo jsonInfo = gson.fromJson(result,
-								JsonInfo.class);
-						String jsonString = gson.toJson(jsonInfo.getJsonStr());
-						getOutOrderExecute(jsonInfo.getMessage(), jsonString);
-					} catch (Exception e) {
+						JSONObject json= new JSONObject(result);  
+						String re = (String)json.get("Message");
+						Object JsonStr = (Object)json.get("JsonStr");
+						String jamNumber = "";
+						if(!JsonStr.equals(null)){
+							jamNumber = JsonStr.toString();
+						}
+						jamNumberExecute(re,jamNumber);
+					} catch (JSONException e) {
 						e.printStackTrace();
-					}
+					}  
+				}else{
 				}
+			}else if (msg.what == 0x03) {// 出库
+				
 			} else if (msg.what == 0x01) {
 				ToastUtil.showToast(OutProductActivity.this, "服务器链接错误!");
 			}
 		}
 	};
 
+	/**
+	 * 查询垛数量
+	 * @param re
+	 * @param jamNumber
+	 */
+	private void jamNumberExecute(String re,String jamNumber){
+		if("查询成功".equals(re)){
+			ToastUtil.showToast(getApplicationContext(), "当前垛数量："+jamNumber);
+			//nowNumberTv.setText("当前垛数量："+jamNumber);
+		}else if("箱码不存在".equals(re)){
+			ToastUtil.showToast(getApplicationContext(), re);
+			//nowNumberTv.setText(re);
+		}else if("此箱码未分垛".equals(re)){
+			ToastUtil.showToast(getApplicationContext(), re);
+			//nowNumberTv.setText(re);
+		}
+	}
+	
 	class ItemClickListener implements OnItemClickListener {
 		/**
 		 * 点击项时触发事件
@@ -313,11 +354,30 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				if ("error".equals(result))
 					handler.sendEmptyMessage(0x01);
 				else
-					handler.sendEmptyMessage(0x03);
+					handler.sendEmptyMessage(0x02);
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}
 		}
 	};
+	
+	   @Override
+	    protected void onResume() {
+	        super.onResume();
+	      //注册广播来获取扫描结果
+	        this.registerReceiver(mReceiver, mFilter);
+	    }
+	    @Override
+	    protected void onPause() {
+	        //注销获取扫描结果的广播
+	        this.unregisterReceiver(mReceiver);
+	        super.onPause();
+	    }
+	    @Override
+	    protected void onDestroy() {
+	        mReceiver = null;
+	        mFilter = null;
+	        super.onDestroy();
+	    }
 
 }

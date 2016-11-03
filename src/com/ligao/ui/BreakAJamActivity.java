@@ -55,8 +55,8 @@ public class BreakAJamActivity extends BaseActivity  implements OnClickListener{
 		jamNumberBt.setOnClickListener(this);
 		goBack.setOnClickListener(this);
 		//隐藏Android输入法窗口
-		 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		    imm.hideSoftInputFromWindow(mNumberEdt.getWindowToken(),0);
+	/*	 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		    imm.hideSoftInputFromWindow(mNumberEdt.getWindowToken(),0);*/
 		
 		//---广播begin---
 	    mReceiver = new BroadcastReceiver() {
