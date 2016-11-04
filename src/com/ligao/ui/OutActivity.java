@@ -98,10 +98,12 @@ public class OutActivity extends Activity implements OnClickListener {
 		operationBt = (Button) findViewById(R.id.bt_operation);
 		gobackTv.setOnClickListener(this);
 		operationBt.setOnClickListener(this);
+		
+		listview = (ListView) this.findViewById(R.id.listview);
+		listview.setEmptyView(findViewById(R.id.layout_empty));
 	}
 
 	private void initView() {
-		listview = (ListView) this.findViewById(R.id.listview);
 		adapter = new ShopAdapter(this, outOrderList, handler,
 				R.layout.list_main_item);
 		listview.setAdapter(adapter);

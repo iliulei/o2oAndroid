@@ -55,5 +55,12 @@
      android:divider="@drawable/filter_spider_line"
      
      ></ListView>
+    
+    <include 
+        layout="@layout/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/layout_empty" />
 
 </LinearLayout>

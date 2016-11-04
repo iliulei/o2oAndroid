@@ -174,8 +174,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				finish();
 				break;
 			case R.id.ibt_out:
-				/*intent = new Intent(IndexActivity.this, OutActivity.class);
-				startActivity(intent);*/
+				intent = new Intent(IndexActivity.this, OutActivity.class);
+				startActivity(intent);
 				ToastUtil.showToast(getApplicationContext(), "开发中，敬请期待！");
 				break;
 			case R.id.ibt_installJam:   

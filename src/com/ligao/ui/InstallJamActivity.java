@@ -9,8 +9,10 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -55,6 +57,7 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
      *箱码集合 
      */
     private ArrayList<String> boxCodeList = new ArrayList<String>();
+    private String scanNumber;
     
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 			if(!textArr[i].equals(""))
 			boxCodeList.add(textArr[i]);
 		}
+		
 		mNumberEdt.setText(text);
 		scanNumberTv.setText("已扫描："+boxCodeList.size()+"(箱)");
 		//---获取缓存的箱码集合
@@ -91,6 +95,7 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 
                 //此处获取扫描结果信息
                 final String scanResult = intent.getStringExtra("EXTRA_SCAN_DATA");
+                scanNumber = scanResult;
                 String text="";
                 boolean pd = true;
                 for (int i = 0; i < boxCodeList.size(); i++) { //判断是否重复扫码
@@ -100,8 +105,14 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
                 		}
 				}
                 
-                if(pd) {boxCodeList.add(0, scanResult);}
-                else {ToastUtil.showToast(getApplicationContext(), scanResult+"码已扫描,请勿重复扫描!");}
+                if(pd) {
+                	boxCodeList.add(0, scanResult);
+                }
+                else {
+                	 repetition();
+                	//ToastUtil.showToast(getApplicationContext(), scanResult+"码已扫描,请勿重复扫描!");
+                	
+                }
                 	
                 for (int i = 0; i < boxCodeList.size(); i++) {//循环拼接箱码字符串
                 	text+=boxCodeList.get(i)+",";
@@ -134,6 +145,11 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 	private void installJamExecute(String re){
 		ToastUtil.showToast(getApplicationContext(), re);
 		scanNumberTv.setText(re);
+		if("操作成功".equals(re)){
+			SpUtil.putString(getApplicationContext(),Constants.INSTALLJAM_BOXCODES,"");
+			mNumberEdt.setText("");
+			boxCodeList.removeAll(boxCodeList);
+		}
 	}
 	
 	/**
@@ -206,6 +222,40 @@ public class InstallJamActivity extends BaseActivity  implements OnClickListener
 			}
 		}
 	};
+	
+	
+	/**
+	 * 箱码重复方法
+	 */
+	private void repetition() {
+		new AlertDialog.Builder(InstallJamActivity.this)
+				.setTitle("操作提示")
+				// 设置对话框标题
+				.setMessage(scanNumber+"码已存在，请选择操作类型!")
+				// 设置显示的内容
+				.setPositiveButton("移除",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								boxCodeList.remove(scanNumber);
+								String text="";
+								 for (int i = 0; i < boxCodeList.size(); i++) {//循环拼接箱码字符串
+					                	text+=boxCodeList.get(i)+",";
+									}
+					                mNumberEdt.setText(text);
+					                scanNumberTv.setText("已扫描："+boxCodeList.size()+"(箱)");
+							}
+						})
+				.setNegativeButton("保留",
+						new DialogInterface.OnClickListener() {// 添加加载出库单按钮
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+							
+							}
+						}).show();// 在按键响应事件中显示此对话框
+	}
 	
     @Override
     protected void onResume() {
