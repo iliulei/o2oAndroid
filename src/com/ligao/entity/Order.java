@@ -1,5 +1,6 @@
 package com.ligao.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author Administrator
  *
  */
-public class Order {
+public class Order  implements Serializable{
 	
 	/**
 	 * 收发货编号
@@ -53,6 +54,7 @@ public class Order {
 	 *  状态 0:默认 创建  1：已导出 2：已导入 3：已同步 4：已入库 5：已下载 
 	 */
 	private String State;
+	
 	
 	/**
 	 * 获取状态名称
@@ -113,7 +115,17 @@ public class Order {
 	 * 产品信息集合
 	 */
 	private List<Product> WwaybillProducts;
-
+	
+	/**
+	 * 下载时间
+	 */
+	private String DownloadDateTime;
+	/**
+	 * 手持端出库单状态
+	 * 状态 0:未开始   1：进行中  2：已完成  3:删除 
+	 */
+	private String HandStatus;
+	
 	public String getWId() {
 		return WId;
 	}
@@ -249,6 +261,23 @@ public class Order {
 	public void setWwaybillProducts(List<Product> wwaybillProducts) {
 		WwaybillProducts = wwaybillProducts;
 	}
+
+	public String getHandStatus() {
+		return HandStatus;
+	}
+
+	public void setHandStatus(String handStatus) {
+		HandStatus = handStatus;
+	}
+
+	public String getDownloadDateTime() {
+		return DownloadDateTime;
+	}
+
+	public void setDownloadDateTime(String downloadDateTime) {
+		DownloadDateTime = downloadDateTime;
+	}
+	
 
 
 	

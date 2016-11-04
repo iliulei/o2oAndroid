@@ -84,10 +84,11 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private EditText mNumberEdt;
 	private ListView listview;
 	private TextView gobackTv;
-	private Button operationBt;
+	private Button operationBt,goBt;
 	List<Goods> recomendGoods = new ArrayList<Goods>();
 	List<Order> outOrderList = new ArrayList<Order>();
 	List<Product> productList = new ArrayList<Product>();
+	private Order outOrder;
 	private List<String> list = new ArrayList<String>();
 	private Gson gson = new Gson();
 	private BroadcastReceiver mReceiver;
@@ -97,13 +98,15 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.out_product_list);
-		productList = (List<Product>) getIntent().getSerializableExtra(
-				"productList");
+		outOrder = (Order) getIntent().getSerializableExtra(
+				"outOrder");
 		gobackTv = (TextView) findViewById(R.id.go_back);
 		operationBt = (Button) findViewById(R.id.bt_operation);
+		goBt =  (Button) findViewById(R.id.bt_go);
 		mNumberEdt = (EditText) findViewById(R.id.edt_number);
 		gobackTv.setOnClickListener(this);
 		operationBt.setOnClickListener(this);
+		goBt.setOnClickListener(this);
 		initView();
 		
 		//---广播begin---
@@ -120,9 +123,12 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		
 	}
 
+	/**
+	 * 初始化控件
+	 */
 	private void initView() {
 		listview = (ListView) this.findViewById(R.id.listview);
-		adapter = new ShopAdapter(this, productList, handler,
+		adapter = new ShopAdapter(this, outOrder.getWwaybillProducts(), handler,
 				R.layout.list_main_item);
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(new ItemClickListener());
@@ -278,6 +284,9 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		case R.id.bt_operation:
 			operation();
 			break;
+		case R.id.bt_go:
+			go();
+			break;
 		default:
 			break;
 		}
@@ -298,7 +307,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 */
 	private void loadOutOrder() {
 		String outOrders = SpUtil.getString(getApplicationContext(),
-				Constants.OUT_ORDERS, "");
+				Constants.NOT_START_OUT_ORDERS, "");
 		Type type = new TypeToken<ArrayList<Order>>() {
 		}.getType();
 		outOrderList = gson.fromJson(outOrders, type);
@@ -312,10 +321,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		new AlertDialog.Builder(OutProductActivity.this)
 				.setTitle("操作提示")
 				// 设置对话框标题
-
 				.setMessage("请选择操作类型！")
 				// 设置显示的内容
-
 				.setPositiveButton("垛数量",
 						new DialogInterface.OnClickListener() {
 
@@ -324,22 +331,50 @@ public class OutProductActivity extends Activity implements OnClickListener {
 									int which) {
 								new Thread(getJamNumberJson).start();
 							}
-
 						})
 				.setNegativeButton("出库", new DialogInterface.OnClickListener() {
-
 					@Override
 					public void onClick(DialogInterface dialog, int which) {// 响应事件
 						new Thread(getJamNumberJson).start();
 					}
 				}).show();// 在按键响应事件中显示此对话框
-
 	}
-
+	
+	/**
+	 * go/扫码后按钮点击事件
+	 */
+	private void go() {
+		String  boxCode = mNumberEdt.getText().toString().trim();
+		
+	}
 	/**
 	 * 获取垛数量
 	 */
 	private Runnable getJamNumberJson = new Runnable() {
+		public void run() {
+			try {
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE,
+						Configer.WcfMethod_QueryPileCount);
+				rpc.addProperty("boxCode", mNumberEdt.getText().toString()
+						.trim());
+				myurl = Configer.getWcfUrl(getApplicationContext());
+				soap_action = Configer.SOAPACTION_FRONT
+						+ Configer.WcfMethod_QueryPileCount;
+				result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
+				// result = GetJson(myurl, params);
+				if ("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x02);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(0x01);
+			}
+		}
+	};
+	/**
+	 * 查询箱码状态
+	 */
+	private Runnable getBoxCodeStatusJson = new Runnable() {
 		public void run() {
 			try {
 				SoapObject rpc = new SoapObject(Configer.NAMESPACE,

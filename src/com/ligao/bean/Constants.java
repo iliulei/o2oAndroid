@@ -68,8 +68,21 @@ public class Constants {
 		public static final String INSTALLJAM_BOXCODES = "installjam_boxcodes";
 		
 		/**
-		 * 出库单号
+		 * 未开始的出库单号集合(下载)
 		 */
-		public static final String OUT_ORDERS = "out_orders";
+		public static final String NOT_START_OUT_ORDERS = "not_start_out_orders";
+		
+		/**
+		 * 进行中的出库单号集合
+		 */
+		public static final String START_OUT_ORDERS = "start_out_orders";
+		/**
+		 * 完成的出库单号集合
+		 */
+		public static final String FINISH_OUT_ORDERS = "finish_out_orders";
+		/**
+		 * 删除的出库单号集合
+		 */
+		public static final String DELETE_OUT_ORDERS = "delete_out_orders";
 	
 }
