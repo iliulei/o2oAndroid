@@ -49,6 +49,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -64,6 +65,7 @@ import com.ligao.entity.Goods;
 import com.ligao.entity.JsonInfo;
 import com.ligao.entity.Order;
 import com.ligao.entity.Product;
+import com.ligao.utils.DiaLogUtils;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.SpUtil;
 import com.ligao.utils.ToastUtil;
@@ -83,13 +85,20 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private ShopAdapter adapter; // 自定义适配器
 	private EditText mNumberEdt;
 	private ListView listview;
-	private TextView gobackTv;
+	private TextView gobackTv,scanNumberTv;
 	private Button operationBt,goBt;
+	private CheckBox isStackCb;
 	List<Goods> recomendGoods = new ArrayList<Goods>();
 	List<Order> outOrderList = new ArrayList<Order>();
 	List<Product> productList = new ArrayList<Product>();
 	private Order outOrder;
-	private List<String> list = new ArrayList<String>();
+	
+	private List<String> boxCodeList = new ArrayList<String>();
+	
+	private List<String> StackBoxList = new ArrayList<String>();
+
+	
+	
 	private Gson gson = new Gson();
 	private BroadcastReceiver mReceiver;
     private IntentFilter mFilter;
@@ -104,6 +113,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		operationBt = (Button) findViewById(R.id.bt_operation);
 		goBt =  (Button) findViewById(R.id.bt_go);
 		mNumberEdt = (EditText) findViewById(R.id.edt_number);
+		isStackCb = (CheckBox) findViewById(R.id.cb_isStack);
+		scanNumberTv = (TextView) findViewById(R.id.tv_scanNumber);
+		
+		isStackCb.setOnClickListener(this);
 		gobackTv.setOnClickListener(this);
 		operationBt.setOnClickListener(this);
 		goBt.setOnClickListener(this);
@@ -131,7 +144,6 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		adapter = new ShopAdapter(this, outOrder.getWwaybillProducts(), handler,
 				R.layout.list_main_item);
 		listview.setAdapter(adapter);
-		listview.setOnItemClickListener(new ItemClickListener());
 	}
 
 	private String result;
@@ -155,12 +167,26 @@ public class OutProductActivity extends Activity implements OnClickListener {
 					}  
 				}else{
 				}
-			}else if (msg.what == 0x03) {// 出库
-				
+			}else if (msg.what == 0x03) {// 获取一垛的所有垛码
+				if(null != result){
+					existsBarCodeExecute(result);
+				}else{
+				}
+			}else if (msg.what == 0x04) {// 根据箱码获取所在垛的垛码
+				if(null != result){
+					System.out.println(result);
+					JsonInfo jsonInfo = gson.fromJson(result,JsonInfo.class);
+					String jsonString = gson.toJson(jsonInfo.getJsonStr());
+					
+					queryPileCodesExecute(jsonInfo.getMessage(),jsonString);
+				}else{
+				}
 			} else if (msg.what == 0x01) {
 				ToastUtil.showToast(OutProductActivity.this, "服务器链接错误!");
 			}
 		}
+
+
 	};
 
 	/**
@@ -181,24 +207,29 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	class ItemClickListener implements OnItemClickListener {
-		/**
-		 * 点击项时触发事件
-		 * 
-		 * @param parent
-		 *            发生点击动作的AdapterView
-		 * @param view
-		 *            在AdapterView中被点击的视图(它是由adapter提供的一个视图)。
-		 * @param position
-		 *            视图在adapter中的位置。
-		 * @param rowid
-		 *            被点击元素的行id。
-		 */
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long rowid) {
-
+	/**
+	 * 验证条形码是否存在
+	 * @param result
+	 */
+	private void existsBarCodeExecute(String re) {
+		if("0".equals(re))
+			list.add(mNumberEdt.getText().toString().trim());
+		else
+			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
+	}
+	/**
+	 * 根据箱码获取所在垛的垛码
+	 * @param re
+	 */
+	private void queryPileCodesExecute(String re,String jsonString){
+		if("操作成功".equals(re)){
+			StackBoxList.add(mNumberEdt.getText().toString().trim());
+		}else{
+			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
 		}
 	}
+	
+
 
 	class ShopAdapter extends BaseAdapter {
 		private Handler mHandler;
@@ -344,9 +375,137 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 * go/扫码后按钮点击事件
 	 */
 	private void go() {
-		String  boxCode = mNumberEdt.getText().toString().trim();
-		
+		String barCode = mNumberEdt.getText().toString().trim();
+           if (VerificationBarCode(barCode))
+           {
+               BarCodeIsRepeat(barCode);
+               //CountMessage();
+               LocalizationInformation();
+           }
 	}
+	
+	   /**
+	    * 验证条形码
+	 * @param barCode
+	 * @return
+	 */
+	private boolean VerificationBarCode(String barCode){
+         /*  lblVerifyTips.Text = "";
+           if (barCode.Length != AppConfig.TraceCodeLength) //重复扫瞄
+           {
+               lblVerifyTips.Text = "*扫瞄条码格式不正确。";
+               return false;
+           }
+           bool exist = _wwaybillInfo.WwaybillProducts.Any(wwaybillProductInfo => barCode.Substring(1, AppConfig.ProductCodeLength) == wwaybillProductInfo.PCode);
+           if (!exist)
+           {
+               lblVerifyTips.Text = "*扫瞄条码不在出库产品中。";
+               return false;
+           }*/
+           return true;
+       }
+	   /**
+	    * 追溯码添加
+	    * @param barCode
+	    */
+	   private void BarCodeIsRepeat(final String barCode){
+		    isRemove = false;
+		   List<Product> productList =  outOrder.getWwaybillProducts(); //产品集合
+           for (Product product : productList) {
+        	   list = isStackCb.isChecked()?product.getStackCodeList() : product.getBoxCodeList();
+        	   
+        	   if(list ==null)list = new ArrayList<String>();
+        	   findResult = list.indexOf(barCode);
+        	   findStackResult = StackBoxList.indexOf(barCode);
+        	   
+        	   if(findResult !=-1 || findStackResult != -1){
+	        	  new AlertDialog.Builder(OutProductActivity.this)
+	   				.setTitle("操作提示")
+	   				// 设置对话框标题
+	   				.setMessage("此箱码已扫描出库，是否移除此箱码出库信息?")
+	   				// 设置显示的内容
+	   				.setPositiveButton("确定",
+	   						new DialogInterface.OnClickListener() {
+	   							@Override
+	   							public void onClick(DialogInterface dialog,
+	   									int which) {
+	   							  if (findResult != -1)
+	   	                            list.remove(barCode);
+	   	                        else
+	   	                            StackBoxList.remove(barCode);
+	   							isRemove = true;
+	   							}
+	   						})
+	   				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+	   					@Override
+	   					public void onClick(DialogInterface dialog, int which) {// 响应事件
+	   					}
+	   				}).show();// 在按键响应事件中显示此对话框
+        	   }else{
+        		   new Thread(getExistsBarCodeJson).start();
+        	   }
+        	   
+	   			if(isStackCb.isChecked()){//勾选,垛
+	   				new Thread(getQueryPileCodesJson).start();
+	   			}else{//未勾选,箱
+	   				product.setBoxCodeList(list);
+	   			}
+        	   break;
+           }
+		   
+
+		 }
+       /**
+     * 计算总共扫瞄量
+     */
+	   private void CountMessage(){
+		   int singleCount = 0, stackCount = 0;
+		   for (Product product : outOrder.getWwaybillProducts()) {
+			   singleCount += product.getBoxCodeList().size();
+               stackCount += product.getStackCodeList().size();
+		   }
+		   String text = "已扫瞄:"+stackCount+"垛"+singleCount+"箱";
+		   scanNumberTv.setText(text);
+       }
+	   /**
+	 * 本地信息写入
+	 */
+	   private void LocalizationInformation(){
+		   //未开始出库单
+		   String outOrders = SpUtil.getString(getApplicationContext(),
+					Constants.NOT_START_OUT_ORDERS, ""); //获取xml中为开始出库单
+			Type type = new TypeToken<ArrayList<Order>>() {}.getType();
+			outOrderList = gson.fromJson(outOrders, type);
+			Order lsOrder = null;
+			for (Order lsOutOrder : outOrderList) {
+				if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+					lsOrder = lsOutOrder;break;
+			}
+			if(lsOrder!=null)
+			outOrderList.remove(lsOrder);//删除
+		   String notStartOutOrders = gson.toJson(outOrderList);
+		   SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, notStartOutOrders);
+		   
+		   //进行中出库单
+		   String startOutOrders = SpUtil.getString(getApplicationContext(),
+					Constants.START_OUT_ORDERS, ""); //获取xml中为进行中出库单
+		   List<Order> startOutOrderList = gson.fromJson(startOutOrders, type);
+		   if(startOutOrderList==null) startOutOrderList = new ArrayList<Order>();
+		   boolean isExist = false;
+		   for (Order lsOutOrder : startOutOrderList) {
+				if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+					isExist = true;break;
+			}
+		   if(!isExist)
+			   startOutOrderList.add(outOrder);
+		   startOutOrders = gson.toJson(startOutOrderList);
+		   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
+		   
+	   }
+
+	
+	
+	
 	/**
 	 * 获取垛数量
 	 */
@@ -371,30 +530,59 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			}
 		}
 	};
+
 	/**
-	 * 查询箱码状态
+	 * 获取一垛的所有垛码
 	 */
-	private Runnable getBoxCodeStatusJson = new Runnable() {
+	private Runnable getExistsBarCodeJson = new Runnable() {
 		public void run() {
 			try {
 				SoapObject rpc = new SoapObject(Configer.NAMESPACE,
-						Configer.WcfMethod_QueryPileCount);
-				rpc.addProperty("boxCode", mNumberEdt.getText().toString()
+						Configer.WcfMethod_ExistsBarCode);
+				rpc.addProperty("code", mNumberEdt.getText().toString()
 						.trim());
 				myurl = Configer.getWcfUrl(getApplicationContext());
 				soap_action = Configer.SOAPACTION_FRONT
-						+ Configer.WcfMethod_QueryPileCount;
+						+ Configer.WcfMethod_ExistsBarCode;
 				result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
-				// result = GetJson(myurl, params);
 				if ("error".equals(result))
 					handler.sendEmptyMessage(0x01);
 				else
-					handler.sendEmptyMessage(0x02);
+					handler.sendEmptyMessage(0x03);
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}
 		}
 	};
+	/**
+	 * 根据箱码获取所在垛的垛码
+	 */
+	private Runnable getQueryPileCodesJson = new Runnable() {
+		public void run() {
+			try {
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE,
+						Configer.WcfMethod_QueryPileCodes);
+				rpc.addProperty("boxCode", mNumberEdt.getText().toString()
+						.trim());
+				myurl = Configer.getWcfUrl(getApplicationContext());
+				soap_action = Configer.SOAPACTION_FRONT
+						+ Configer.WcfMethod_QueryPileCodes;
+				result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
+				if ("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x04);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(0x01);
+			}
+		}
+	};
+	
+	
+	private boolean isRemove;
+	private int findResult;
+	private int findStackResult;
+	private List<String> list;
 	
 	   @Override
 	    protected void onResume() {
@@ -414,5 +602,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	        mFilter = null;
 	        super.onDestroy();
 	    }
+	    
+
 
 }
