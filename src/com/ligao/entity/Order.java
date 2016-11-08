@@ -87,7 +87,6 @@ public class Order  implements Serializable{
 			break;
 		}
 		return stateName;
-		
 	}
 	
 	/**
@@ -125,6 +124,36 @@ public class Order  implements Serializable{
 	 * 状态 0:未开始   1：进行中  2：已完成  3:删除 
 	 */
 	private String HandStatus;
+	
+	/**
+	 * 获取手持端状态名称
+	 * @return 状态名称
+	 */
+	public  String getHandStatusName(){
+		String stateName="默认";
+		String handStatus = getHandStatus();
+		if(handStatus!=null&&!"".equals(handStatus)){
+			switch (Integer.parseInt(handStatus)) {
+			case 0:
+				stateName = "未开始";
+				break;
+			case 1:
+				stateName = "进行中";
+				break;
+			case 2:
+				stateName = "已完成";
+				break;
+			case 3:
+				stateName = "删除";
+				break;
+			default:
+				stateName = "默认";
+				break;
+			}
+		}
+		return stateName;
+	}
+	
 	
 	public String getWId() {
 		return WId;

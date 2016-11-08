@@ -93,7 +93,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	List<Product> productList = new ArrayList<Product>();
 	private Order outOrder;
 	private List<String> boxCodeList = new ArrayList<String>();
-	private List<String> StackBoxList = new ArrayList<String>();
+	
 	private Gson gson = new Gson();
 	private BroadcastReceiver mReceiver;
     private IntentFilter mFilter;
@@ -124,6 +124,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
                 //此处获取扫描结果信息
                 final String scanResult = intent.getStringExtra("EXTRA_SCAN_DATA");
                 mNumberEdt.setText(scanResult);
+                go();
             }
         };
         mFilter = new IntentFilter("ACTION_BAR_SCAN");
@@ -162,7 +163,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 					}  
 				}else{
 				}
-			}else if (msg.what == 0x03) {// 获取一垛的所有垛码
+			}else if (msg.what == 0x03) {// 验证条形码是否存在
 				if(null != result){
 					existsBarCodeExecute(result);
 				}else{
@@ -213,6 +214,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 * @param result
 	 */
 	private void existsBarCodeExecute(String re) {
+		System.out.println("LeoL 验证条形码是否存在RE输出:"+re);
+		
 		if("0".equals(re))
 			list.add(mNumberEdt.getText().toString().trim());
 		else
@@ -385,7 +388,9 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				.setNegativeButton("出库", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {// 响应事件
-						outWarehouse();
+						//outWarehouse();
+						
+						new Thread(getQueryPileCodesJson).start();
 					}
 				}).show();// 在按键响应事件中显示此对话框
 	}
@@ -440,10 +445,14 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		    isRemove = false;
 		   List<Product> productList =  outOrder.getWwaybillProducts(); //产品集合
            for (Product product : productList) {
-        	   list = isStackCb.isChecked()?product.getStackCodeList() : product.getBoxCodeList();
         	   
-        	   if(list ==null)list = new ArrayList<String>();
-        	   findResult = list.indexOf(barCode);
+        	   if(!product.getPCode().equals(barCode.substring(1, 7))) continue;//判断产品和箱码是否对应
+        	   
+        	   list = isStackCb.isChecked()?product.getStackCodeList() : product.getBoxCodeList();//垛，箱区分
+        	   BoxList = product.getBoxCodeList() !=null ? product.getBoxCodeList() : new ArrayList<String>();
+        	   StackBoxList =product.getStackCodeList() !=null ? product.getStackCodeList() : new ArrayList<String>();
+        	   
+        	   findResult = BoxList.indexOf(barCode);
         	   findStackResult = StackBoxList.indexOf(barCode);
         	   
         	   if(findResult !=-1 || findStackResult != -1){
@@ -458,10 +467,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	   							public void onClick(DialogInterface dialog,
 	   									int which) {
 	   							  if (findResult != -1)
-	   	                            list.remove(barCode);
+	   	                            BoxList.remove(barCode);
 	   	                        else
 	   	                            StackBoxList.remove(barCode);
-	   							isRemove = true;
+	   							    isRemove = true;
 	   							}
 	   						})
 	   				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -474,9 +483,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
         	   }
         	   
 	   			if(isStackCb.isChecked()){//勾选,垛
+	   				
 	   				new Thread(getQueryPileCodesJson).start();
 	   			}else{//未勾选,箱
-	   				product.setBoxCodeList(list);
+	   				product.setBoxCodeList(BoxList);
 	   			}
         	   break;
            }
@@ -557,7 +567,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	};
 
 	/**
-	 * 获取一垛的所有垛码
+	 * 验证条形码是否存在
 	 */
 	private Runnable getExistsBarCodeJson = new Runnable() {
 		public void run() {
@@ -632,7 +642,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private boolean isRemove;
 	private int findResult;
 	private int findStackResult;
-	private List<String> list;
+	private List<String> BoxList,StackBoxList,list = new ArrayList<String>();
 	
 	   @Override
 	    protected void onResume() {
