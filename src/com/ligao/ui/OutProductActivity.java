@@ -92,13 +92,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	List<Order> outOrderList = new ArrayList<Order>();
 	List<Product> productList = new ArrayList<Product>();
 	private Order outOrder;
-	
 	private List<String> boxCodeList = new ArrayList<String>();
-	
 	private List<String> StackBoxList = new ArrayList<String>();
-
-	
-	
 	private Gson gson = new Gson();
 	private BroadcastReceiver mReceiver;
     private IntentFilter mFilter;
@@ -181,6 +176,12 @@ public class OutProductActivity extends Activity implements OnClickListener {
 					queryPileCodesExecute(jsonInfo.getMessage(),jsonString);
 				}else{
 				}
+			} else if (msg.what == 0x05) {// 出库
+				if(null != result){
+					System.out.println(result);
+					saveOutWareHouseExecute(result);
+				}else{
+				}
 			} else if (msg.what == 0x01) {
 				ToastUtil.showToast(OutProductActivity.this, "服务器链接错误!");
 			}
@@ -227,6 +228,47 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		}else{
 			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
 		}
+	}
+	/**
+	 * 出库
+	 */
+	private void saveOutWareHouseExecute(String re){
+		if(re.indexOf("操作成功") != -1){
+			  //进行中出库单
+			   String startOutOrders = SpUtil.getString(getApplicationContext(),
+						Constants.START_OUT_ORDERS, ""); //获取xml中为进行出库单
+				Type type = new TypeToken<ArrayList<Order>>() {}.getType();
+				 List<Order> startOutOrderList = gson.fromJson(startOutOrders, type);
+				 if(startOutOrderList==null) startOutOrderList = new ArrayList<Order>();
+				Order lsOrder = null;
+				for (Order lsOutOrder : startOutOrderList) {
+					if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+						lsOrder = lsOutOrder;break;
+				}
+				if(lsOrder!=null)
+			   startOutOrderList.remove(lsOrder);//删除
+			   startOutOrders = gson.toJson(startOutOrderList);
+			   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
+			   
+			   //已完成出库单 FINISH_OUT_ORDERS
+			   String finishOutOrders = SpUtil.getString(getApplicationContext(),
+						Constants.FINISH_OUT_ORDERS, ""); //获取xml中为完成出库单
+			   List<Order> finishOutOrderList = gson.fromJson(finishOutOrders, type);
+			   if(finishOutOrderList==null) finishOutOrderList = new ArrayList<Order>();
+			   boolean isExist = false;
+			   for (Order lsOutOrder : finishOutOrderList) {
+					if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+						isExist = true;break;
+				}
+			   if(!isExist)
+				   finishOutOrderList.add(outOrder);
+			   finishOutOrders = gson.toJson(finishOutOrderList);
+			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);
+			   
+			   	DiaLogUtils.showDialog(OutProductActivity.this, "操作成功!", false);
+			}else{
+				DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);
+			}
 	}
 	
 
@@ -285,25 +327,12 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			holder.name_Three.setText("规格:" + bean.getSpec());
 			return convertView;
 		}
-
 		private final class ViewHolder {
 			public TextView name_One;
 			public TextView name_Two;
 			public TextView name_Three;
 		}
 
-	}
-
-	// 事件点击监听器
-	private final class ClickListener implements OnClickListener {
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.list: // 返回
-				OutProductActivity.this.finish();
-				break;
-			}
-		}
 	}
 
 	@Override
@@ -325,24 +354,14 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * 下载出库单得到服务器返回数据，进行操作
-	 * 
-	 * @param re
-	 * @param jsonString
+	 * 出库
 	 */
-	private void getOutOrderExecute(String re, String jsonString) {
-	}
-
-	/**
-	 * 加载缓存内出库单
-	 */
-	private void loadOutOrder() {
-		String outOrders = SpUtil.getString(getApplicationContext(),
-				Constants.NOT_START_OUT_ORDERS, "");
-		Type type = new TypeToken<ArrayList<Order>>() {
-		}.getType();
-		outOrderList = gson.fromJson(outOrders, type);
-		initView();
+	private void outWarehouse() {
+		if(!"2".equals(outOrder.getState())){
+				DiaLogUtils.showDialog(OutProductActivity.this,"没有扫描条码，不可出库!", false);
+		}else{
+			new Thread(getSaveOutWareHouseJson).start();
+		}
 	}
 
 	/**
@@ -366,7 +385,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				.setNegativeButton("出库", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {// 响应事件
-						new Thread(getJamNumberJson).start();
+						outWarehouse();
 					}
 				}).show();// 在按键响应事件中显示此对话框
 	}
@@ -388,21 +407,30 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	    * 验证条形码
 	 * @param barCode
 	 * @return
+	 * 2016年11月8日 10:23:23
+	 * leol
 	 */
 	private boolean VerificationBarCode(String barCode){
-         /*  lblVerifyTips.Text = "";
-           if (barCode.Length != AppConfig.TraceCodeLength) //重复扫瞄
+			boolean panduan = true,exist = false;
+           if (barCode.length() !=22) //22为箱码长度
            {
-               lblVerifyTips.Text = "*扫瞄条码格式不正确。";
-               return false;
+        	   DiaLogUtils.showDialog(OutProductActivity.this,"扫瞄条码格式不正确!", false);
+        	   panduan = false;
+        	   return false;
            }
-           bool exist = _wwaybillInfo.WwaybillProducts.Any(wwaybillProductInfo => barCode.Substring(1, AppConfig.ProductCodeLength) == wwaybillProductInfo.PCode);
+           barCode = barCode.substring(1, 7);  //7为条码截取长度,截取出的字符串为产品编码
+           for (Product product : outOrder.getWwaybillProducts()) {
+        	   if(product.getPCode().equals(barCode))
+        		   exist =true;
+        	   break;
+           }
            if (!exist)
            {
-               lblVerifyTips.Text = "*扫瞄条码不在出库产品中。";
+               DiaLogUtils.showDialog(OutProductActivity.this,"扫瞄条码不在出库产品中!", false);
+               panduan = false;
                return false;
-           }*/
-           return true;
+           }
+           return panduan;
        }
 	   /**
 	    * 追溯码添加
@@ -468,7 +496,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		   scanNumberTv.setText(text);
        }
 	   /**
-	 * 本地信息写入
+	 * 扫描缓存修改
 	 */
 	   private void LocalizationInformation(){
 		   //未开始出库单
@@ -502,9 +530,6 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
 		   
 	   }
-
-	
-	
 	
 	/**
 	 * 获取垛数量
@@ -572,6 +597,31 @@ public class OutProductActivity extends Activity implements OnClickListener {
 					handler.sendEmptyMessage(0x01);
 				else
 					handler.sendEmptyMessage(0x04);
+			} catch (Exception e) {
+				handler.sendEmptyMessage(0x01);
+			}
+		}
+	};
+	
+	/**
+	 * 出库
+	 */
+	private Runnable getSaveOutWareHouseJson = new Runnable() {
+		public void run() {
+			try {
+				SoapObject rpc = new SoapObject(Configer.NAMESPACE,
+						Configer.WcfMethod_SaveOutWareHouse);
+				String json = gson.toJson(outOrder);
+				rpc.addProperty("outWareHouseJson",  json);
+				rpc.addProperty("type", 1);
+				myurl = Configer.getWcfUrl(getApplicationContext());
+				soap_action = Configer.SOAPACTION_FRONT
+						+ Configer.WcfMethod_SaveOutWareHouse;
+				result = KsoapUtil.GetJsonWcf(rpc, myurl, soap_action);
+				if ("error".equals(result))
+					handler.sendEmptyMessage(0x01);
+				else
+					handler.sendEmptyMessage(0x05);
 			} catch (Exception e) {
 				handler.sendEmptyMessage(0x01);
 			}
