@@ -37,6 +37,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -242,6 +243,7 @@ public class OutActivity extends Activity implements OnClickListener {
 			}
 			holder.name_One.setText("订单号:" + bean.getWCode());
 			holder.name_Two.setText("状态:" + bean.getHandStatusName());
+			holder.name_Two.setTextColor(Color.parseColor("#ff0000"));
 			holder.name_Three.setText("接收地址:" + bean.getOName());
 			return convertView;
 		}
@@ -358,10 +360,16 @@ public class OutActivity extends Activity implements OnClickListener {
 	private void loadOutOrder() {
 		String outOrders = SpUtil.getString(getApplicationContext(),
 				Constants.NOT_START_OUT_ORDERS, "");
-		if(!"".equals(outOrders)){
-			outOrderList = gson.fromJson(outOrders, type);
-			initView();
+		String startOutOrders = SpUtil.getString(getApplicationContext(),
+				Constants.START_OUT_ORDERS, "");
+		outOrderList = new ArrayList<Order>();
+		if(!"".equals(startOutOrders)){
+			outOrderList.addAll((List<Order>)gson.fromJson(startOutOrders, type));
 		}
+		if(!"".equals(outOrders)){
+			outOrderList.addAll((List<Order>)gson.fromJson(outOrders, type));
+		}
+		initView();
 	}
 
 	
@@ -371,8 +379,11 @@ public class OutActivity extends Activity implements OnClickListener {
 	private void operation() {
 			new Thread(getOutOrderJson).start();
 	}
-	
-	
+	@Override
+	protected void onStart() {
+		loadOutOrder();
+		super.onStart();
+	}
 	
 	/**
 	 * 操作按钮点击事件  dilog方式，（下载出库单，加载出库单） 2016年11月4日 14:39:19

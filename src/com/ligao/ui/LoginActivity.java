@@ -46,6 +46,7 @@ import com.ligao.bean.Constants;
 import com.ligao.entity.User;
 import com.ligao.ui.base.BaseActivity;
 import com.ligao.utils.ShareSharePreferenceUtil;
+import com.ligao.utils.SpUtil;
 import com.ligao.utils.ToastUtil;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
@@ -66,9 +67,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
 		findViewById();
 		initView();
+		
+		//TODO 测试使用 默认添加服务器地址  2016年11月9日 13:28:57 leol
+		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_ADDRESS,"192.168.170.119");
+		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_PORT,"8065");
+	
 	}
 
 	@Override

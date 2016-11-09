@@ -3,7 +3,6 @@ package com.ligao.shoppingcart;
 import java.util.HashMap;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.ligao.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-@SuppressLint("HandlerLeak")
 public class ShopAdapter extends BaseAdapter {
 
 	private Handler mHandler;
@@ -34,7 +32,6 @@ public class ShopAdapter extends BaseAdapter {
 	public static List<ShopBean> list;		//数据集合List
 	private LayoutInflater inflater;	//布局填充器
 	private static HashMap<Integer, Boolean> isSelected; 
-	@SuppressLint("UseSparseArrays")
 	public ShopAdapter(Context context,List<ShopBean> list
 			,Handler mHandler,int resourceId){
 		this.list = list;

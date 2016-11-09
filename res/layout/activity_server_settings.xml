@@ -59,6 +59,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:ems="10"
+                        android:text="192.169.170.119"
                         android:focusableInTouchMode="true"
                         android:padding="5.0dip"
                         android:paddingRight="30dp"
@@ -96,6 +97,7 @@
                         android:paddingRight="30dp"
                         android:textColor="#ff3b3b3b"
                         android:textSize="16.0sp" >
+                         android:text="8065"
                     </EditText>
                 </LinearLayout>
 

@@ -88,9 +88,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private TextView gobackTv,scanNumberTv;
 	private Button operationBt,goBt;
 	private CheckBox isStackCb;
-	List<Goods> recomendGoods = new ArrayList<Goods>();
-	List<Order> outOrderList = new ArrayList<Order>();
-	List<Product> productList = new ArrayList<Product>();
+	private List<Goods> recomendGoods = new ArrayList<Goods>();
+	private List<Order> outOrderList = new ArrayList<Order>();
+	private List<Product> overallProductList = new ArrayList<Product>();
+	Product overallProduct;
 	private Order outOrder;
 	private List<String> boxCodeList = new ArrayList<String>();
 	
@@ -129,7 +130,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
         };
         mFilter = new IntentFilter("ACTION_BAR_SCAN");
       //---广播end---
-		
+        CountMessage();
 	}
 
 	/**
@@ -216,18 +217,48 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private void existsBarCodeExecute(String re) {
 		System.out.println("LeoL 验证条形码是否存在RE输出:"+re);
 		
-		if("0".equals(re))
-			list.add(mNumberEdt.getText().toString().trim());
-		else
+		if("0".equals(re)){
+			if(isStackCb.isChecked()){//勾选,垛
+				new Thread(getQueryPileCodesJson).start();
+   			}else{//未勾选,箱
+   				overallProductList = outOrder.getWwaybillProducts();
+   				overallProductList.remove(overallProduct);
+   				BoxList.add(mNumberEdt.getText().toString().trim());
+   				overallProduct.setBoxCodeList(BoxList);
+   				overallProductList.add(overallProduct);
+   				CountMessage();
+   				LocalizationInformation();
+   			}
+		}
+		else{
 			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
+		}
 	}
 	/**
-	 * 根据箱码获取所在垛的垛码
+	 * 根据箱码获取所在垛的箱码集合
 	 * @param re
 	 */
-	private void queryPileCodesExecute(String re,String jsonString){
+	private void queryPileCodesExecute(String re,String boxCodes){
 		if("操作成功".equals(re)){
-			StackBoxList.add(mNumberEdt.getText().toString().trim());
+			System.out.println(re);
+			String [] boxCodeArray = boxCodes.split(",");
+			List<String> stringList = new ArrayList<String>();
+			if(isRemove){
+				for (String  boxCode : boxCodeArray) {//循环箱码  //TODO 经测试 暂时无用  2016年11月9日 15:15:20  leol
+					for (String StackBox : StackBoxList) {//循环垛，箱识别码
+						if(boxCode.equals(StackBox)) stringList.add(boxCode);
+					}
+				}
+				StackBoxList.removeAll(stringList);
+   			}else{
+   				StackBoxList.add(mNumberEdt.getText().toString().trim());
+   			}
+			overallProductList = outOrder.getWwaybillProducts();
+			overallProductList.remove(overallProduct);
+			overallProduct.setStackCodeList(StackBoxList);
+			overallProductList.add(overallProduct);
+			CountMessage();
+			LocalizationInformation();
 		}else{
 			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
 		}
@@ -403,8 +434,6 @@ public class OutProductActivity extends Activity implements OnClickListener {
            if (VerificationBarCode(barCode))
            {
                BarCodeIsRepeat(barCode);
-               //CountMessage();
-               LocalizationInformation();
            }
 	}
 	
@@ -426,8 +455,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
            barCode = barCode.substring(1, 7);  //7为条码截取长度,截取出的字符串为产品编码
            for (Product product : outOrder.getWwaybillProducts()) {
         	   if(product.getPCode().equals(barCode))
+        	   { 	
         		   exist =true;
-        	   break;
+        	   		break;
+        	   	}
            }
            if (!exist)
            {
@@ -448,12 +479,14 @@ public class OutProductActivity extends Activity implements OnClickListener {
         	   
         	   if(!product.getPCode().equals(barCode.substring(1, 7))) continue;//判断产品和箱码是否对应
         	   
+        	   overallProduct = product;
         	   list = isStackCb.isChecked()?product.getStackCodeList() : product.getBoxCodeList();//垛，箱区分
         	   BoxList = product.getBoxCodeList() !=null ? product.getBoxCodeList() : new ArrayList<String>();
         	   StackBoxList =product.getStackCodeList() !=null ? product.getStackCodeList() : new ArrayList<String>();
         	   
         	   findResult = BoxList.indexOf(barCode);
         	   findStackResult = StackBoxList.indexOf(barCode);
+        	   
         	   
         	   if(findResult !=-1 || findStackResult != -1){
 	        	  new AlertDialog.Builder(OutProductActivity.this)
@@ -466,11 +499,20 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	   							@Override
 	   							public void onClick(DialogInterface dialog,
 	   									int which) {
-	   							  if (findResult != -1)
-	   	                            BoxList.remove(barCode);
-	   	                        else
-	   	                            StackBoxList.remove(barCode);
-	   							    isRemove = true;
+	   								
+	   								overallProductList = outOrder.getWwaybillProducts();
+		   			   				overallProductList.remove(overallProduct);
+		   							  if (findResult != -1)  { 
+		   								  BoxList.remove(barCode);
+		   								  overallProduct.setBoxCodeList(BoxList);
+		   							  } else{
+		   								  StackBoxList.remove(barCode);
+		   								  overallProduct.setStackCodeList(StackBoxList);
+		   							   }
+		   							  isRemove = true;
+	   			   				overallProductList.add(overallProduct);
+	   			   				CountMessage();
+	   			   				LocalizationInformation();
 	   							}
 	   						})
 	   				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -482,12 +524,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
         		   new Thread(getExistsBarCodeJson).start();
         	   }
         	   
-	   			if(isStackCb.isChecked()){//勾选,垛
-	   				
-	   				new Thread(getQueryPileCodesJson).start();
-	   			}else{//未勾选,箱
-	   				product.setBoxCodeList(BoxList);
-	   			}
+
         	   break;
            }
 		   
@@ -498,8 +535,15 @@ public class OutProductActivity extends Activity implements OnClickListener {
      */
 	   private void CountMessage(){
 		   int singleCount = 0, stackCount = 0;
+		   
+		   System.out.println(overallProductList);
+		   if(overallProductList.size()!=0){
+			   outOrder.setWwaybillProducts(overallProductList);
+		   }
 		   for (Product product : outOrder.getWwaybillProducts()) {
+			   if(product.getBoxCodeList()!=null)
 			   singleCount += product.getBoxCodeList().size();
+			   if(product.getStackCodeList()!=null)
                stackCount += product.getStackCodeList().size();
 		   }
 		   String text = "已扫瞄:"+stackCount+"垛"+singleCount+"箱";
@@ -516,26 +560,32 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			outOrderList = gson.fromJson(outOrders, type);
 			Order lsOrder = null;
 			for (Order lsOutOrder : outOrderList) {
-				if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+				if(lsOutOrder.getWCode().equals(outOrder.getWCode())){
 					lsOrder = lsOutOrder;break;
+				}
 			}
-			if(lsOrder!=null)
-			outOrderList.remove(lsOrder);//删除
+			if(lsOrder!=null)outOrderList.remove(lsOrder);//删除
 		   String notStartOutOrders = gson.toJson(outOrderList);
 		   SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, notStartOutOrders);
 		   
 		   //进行中出库单
+		   lsOrder = null;
 		   String startOutOrders = SpUtil.getString(getApplicationContext(),
 					Constants.START_OUT_ORDERS, ""); //获取xml中为进行中出库单
 		   List<Order> startOutOrderList = gson.fromJson(startOutOrders, type);
 		   if(startOutOrderList==null) startOutOrderList = new ArrayList<Order>();
 		   boolean isExist = false;
 		   for (Order lsOutOrder : startOutOrderList) {
-				if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
-					isExist = true;break;
+				if(lsOutOrder.getWCode().equals(outOrder.getWCode())){
+					isExist = true;
+					lsOrder = lsOutOrder;
+					break;
+				}
 			}
-		   if(!isExist)
-			   startOutOrderList.add(outOrder);
+		   if(lsOrder!=null)startOutOrderList.remove(lsOrder);
+		   outOrder.setHandStatus("1");//进行中
+		   outOrder.setState("2");//导入
+		   startOutOrderList.add(outOrder);
 		   startOutOrders = gson.toJson(startOutOrderList);
 		   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
 		   
