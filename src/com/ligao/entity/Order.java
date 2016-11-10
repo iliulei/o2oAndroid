@@ -17,7 +17,7 @@ public class Order  implements Serializable{
 	/**
 	 * 货单类型0发货单，1收货单
 	 */
-	private String WType;
+	private Integer WType;
 	/**
 	 * 操作物流节点
 	 */
@@ -53,7 +53,7 @@ public class Order  implements Serializable{
 	/**
 	 *  状态 0:默认 创建  1：已导出 2：已导入 3：已同步 4：已入库 5：已下载 
 	 */
-	private String State;
+	private Integer State;
 	
 	
 	/**
@@ -62,8 +62,7 @@ public class Order  implements Serializable{
 	 */
 	public  String getStateName(){
 		String stateName="默认";
-		String stateStatus = getState();
-		switch (Integer.parseInt(stateStatus.split("\\..")[0])) {
+		switch (getState()) {
 		case 0:
 			stateName = "默认";
 			break;
@@ -108,7 +107,7 @@ public class Order  implements Serializable{
 	/**
 	 * 单据类型,0为正常单，1为退货单，2为调拨单
 	 */
-	private String BillType;
+	private Integer BillType;
 	
 	/**
 	 * 产品信息集合
@@ -130,7 +129,7 @@ public class Order  implements Serializable{
 	 * @return 状态名称
 	 */
 	public  String getHandStatusName(){
-		String stateName="默认";
+		String stateName="未开始";
 		String handStatus = getHandStatus();
 		if(handStatus!=null&&!"".equals(handStatus)){
 			switch (Integer.parseInt(handStatus)) {
@@ -163,11 +162,11 @@ public class Order  implements Serializable{
 		WId = wId;
 	}
 
-	public String getWType() {
+	public Integer getWType() {
 		return WType;
 	}
 
-	public void setWType(String wType) {
+	public void setWType(Integer wType) {
 		WType = wType;
 	}
 
@@ -235,11 +234,11 @@ public class Order  implements Serializable{
 		CDateTime = cDateTime;
 	}
 
-	public String getState() {
+	public Integer getState() {
 		return State;
 	}
 
-	public void setState(String state) {
+	public void setState(Integer state) {
 		State = state;
 	}
 
@@ -275,11 +274,11 @@ public class Order  implements Serializable{
 		BoxLogisticsInfos = boxLogisticsInfos;
 	}
 
-	public String getBillType() {
+	public Integer getBillType() {
 		return BillType;
 	}
 
-	public void setBillType(String billType) {
+	public void setBillType(Integer billType) {
 		BillType = billType;
 	}
 

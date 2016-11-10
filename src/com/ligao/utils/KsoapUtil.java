@@ -26,7 +26,7 @@ public class KsoapUtil {
         envelope.bodyOut = rpc;  
         // 设置是否调用的是dotNet开发的WebService  
         envelope.dotNet = true;
-        HttpTransportSE transport = new HttpTransportSE(myUrl,5*1000);  
+        HttpTransportSE transport = new HttpTransportSE(myUrl,10*1000);  
         try {  
             // 调用WebService  
             transport.call(soap_action, envelope);  

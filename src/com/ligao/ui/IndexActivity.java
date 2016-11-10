@@ -428,19 +428,19 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(1);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_01);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_01);
 		mItemData.setPrice("￥12.00");
 		mStormListData.add(mItemData);
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(2);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_02);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_02);
 		mItemData.setPrice("￥10.00");
 		mStormListData.add(mItemData);
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(3);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_03);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_03);
 		mItemData.setPrice("￥8.00");
 		mStormListData.add(mItemData);
 
@@ -448,19 +448,19 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(4);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_08);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_08);
 		mItemData.setPrice("￥35.00");
 		mPromotionListData.add(mItemData);
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(5);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_09);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_09);
 		mItemData.setPrice("￥29.00");
 		mPromotionListData.add(mItemData);
 
 		mItemData = new IndexGalleryItemData();
 		mItemData.setId(6);
-		mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_10);
+		//mItemData.setImageUrl("drawable://" + R.drawable.index_gallery_10);
 		mItemData.setPrice("￥45.00");
 		mPromotionListData.add(mItemData);
 

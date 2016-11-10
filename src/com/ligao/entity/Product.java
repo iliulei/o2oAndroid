@@ -30,19 +30,19 @@ public class Product implements Serializable{
 	/**
 	 * 计划数量
 	 */
-	private String PlanAmount;
+	private Integer PlanAmount;
 	/**
 	 * 计划单品数量
 	 */
-	private String PlanSingleAmount;
+	private Integer PlanSingleAmount;
 	/**
 	 * 实际数量
 	 */
-	private String FactsAmount;
+	private Integer FactsAmount;
 	/**
 	 *  实际单品数量
 	 */
-	private String FactsSingleAmount;
+	private Integer FactsSingleAmount;
 	/**
 	 * 出入货单ID
 	 */
@@ -99,28 +99,28 @@ public class Product implements Serializable{
 	public void setUnit(String unit) {
 		Unit = unit;
 	}
-	public String getPlanAmount() {
+	public Integer getPlanAmount() {
 		return PlanAmount;
 	}
-	public void setPlanAmount(String planAmount) {
+	public void setPlanAmount(Integer planAmount) {
 		PlanAmount = planAmount;
 	}
-	public String getPlanSingleAmount() {
+	public Integer getPlanSingleAmount() {
 		return PlanSingleAmount;
 	}
-	public void setPlanSingleAmount(String planSingleAmount) {
+	public void setPlanSingleAmount(Integer planSingleAmount) {
 		PlanSingleAmount = planSingleAmount;
 	}
-	public String getFactsAmount() {
+	public Integer getFactsAmount() {
 		return FactsAmount;
 	}
-	public void setFactsAmount(String factsAmount) {
+	public void setFactsAmount(Integer factsAmount) {
 		FactsAmount = factsAmount;
 	}
-	public String getFactsSingleAmount() {
+	public Integer getFactsSingleAmount() {
 		return FactsSingleAmount;
 	}
-	public void setFactsSingleAmount(String factsSingleAmount) {
+	public void setFactsSingleAmount(Integer factsSingleAmount) {
 		FactsSingleAmount = factsSingleAmount;
 	}
 	public String getWId() {

@@ -268,40 +268,44 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 */
 	private void saveOutWareHouseExecute(String re){
 		if(re.indexOf("操作成功") != -1){
-			  //进行中出库单
-			   String startOutOrders = SpUtil.getString(getApplicationContext(),
-						Constants.START_OUT_ORDERS, ""); //获取xml中为进行出库单
+			   //进行中出库单
+			   String outOrders = SpUtil.getString(getApplicationContext(),
+						Constants.START_OUT_ORDERS, ""); 
 				Type type = new TypeToken<ArrayList<Order>>() {}.getType();
-				 List<Order> startOutOrderList = gson.fromJson(startOutOrders, type);
-				 if(startOutOrderList==null) startOutOrderList = new ArrayList<Order>();
+				outOrderList = gson.fromJson(outOrders, type);
 				Order lsOrder = null;
-				for (Order lsOutOrder : startOutOrderList) {
-					if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
+				for (Order lsOutOrder : outOrderList) {
+					if(lsOutOrder.getWCode().equals(outOrder.getWCode())){
 						lsOrder = lsOutOrder;break;
+					}
 				}
-				if(lsOrder!=null)
-			   startOutOrderList.remove(lsOrder);//删除
-			   startOutOrders = gson.toJson(startOutOrderList);
+				if(lsOrder!=null)outOrderList.remove(lsOrder);//删除
+			   String  startOutOrders = gson.toJson(outOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
 			   
-			   //已完成出库单 FINISH_OUT_ORDERS
+			   //完成的出库单
+			   lsOrder = null;
 			   String finishOutOrders = SpUtil.getString(getApplicationContext(),
-						Constants.FINISH_OUT_ORDERS, ""); //获取xml中为完成出库单
+						Constants.FINISH_OUT_ORDERS, ""); 
 			   List<Order> finishOutOrderList = gson.fromJson(finishOutOrders, type);
 			   if(finishOutOrderList==null) finishOutOrderList = new ArrayList<Order>();
 			   boolean isExist = false;
 			   for (Order lsOutOrder : finishOutOrderList) {
-					if(lsOutOrder.getWCode().equals(outOrder.getWCode()))
-						isExist = true;break;
+					if(lsOutOrder.getWCode().equals(outOrder.getWCode())){
+						isExist = true;
+						lsOrder = lsOutOrder;
+						break;
+					}
 				}
-			   if(!isExist)
-				   finishOutOrderList.add(outOrder);
+			   if(lsOrder!=null)finishOutOrderList.remove(lsOrder);
+			   outOrder.setHandStatus("2");//进行中
+			   finishOutOrderList.add(outOrder);
 			   finishOutOrders = gson.toJson(finishOutOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);
-			   
 			   	DiaLogUtils.showDialog(OutProductActivity.this, "操作成功!", false);
 			}else{
-				DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);
+				DiaLogUtils.showDialog(OutProductActivity.this, re , false);
+				//DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);
 			}
 	}
 	
@@ -391,10 +395,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 * 出库
 	 */
 	private void outWarehouse() {
-		if(!"2".equals(outOrder.getState())){
-				DiaLogUtils.showDialog(OutProductActivity.this,"没有扫描条码，不可出库!", false);
-		}else{
+		if(outOrder.getState()==2 &&"1".equals(outOrder.getHandStatus())){
 			new Thread(getSaveOutWareHouseJson).start();
+		}else{
+			DiaLogUtils.showDialog(OutProductActivity.this,"没有扫描条码，不可出库!", false);
 		}
 	}
 
@@ -419,9 +423,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				.setNegativeButton("出库", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {// 响应事件
-						//outWarehouse();
-						
-						new Thread(getQueryPileCodesJson).start();
+						outWarehouse();
+						//new Thread(getQueryPileCodesJson).start();
 					}
 				}).show();// 在按键响应事件中显示此对话框
 	}
@@ -584,7 +587,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			}
 		   if(lsOrder!=null)startOutOrderList.remove(lsOrder);
 		   outOrder.setHandStatus("1");//进行中
-		   outOrder.setState("2");//导入
+		   outOrder.setState(2);//导入
 		   startOutOrderList.add(outOrder);
 		   startOutOrders = gson.toJson(startOutOrderList);
 		   SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, startOutOrders);
