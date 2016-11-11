@@ -173,8 +173,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				if(null != result){
 					System.out.println(result);
 					JsonInfo jsonInfo = gson.fromJson(result,JsonInfo.class);
-					String jsonString = gson.toJson(jsonInfo.getJsonStr());
-					
+					String jsonString = "";
+					if(jsonInfo.getJsonStr()!=null) jsonString = jsonInfo.getJsonStr().toString();
 					queryPileCodesExecute(jsonInfo.getMessage(),jsonString);
 				}else{
 				}
@@ -242,17 +242,17 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		if("操作成功".equals(re)){
 			System.out.println(re);
 			String [] boxCodeArray = boxCodes.split(",");
-			List<String> stringList = new ArrayList<String>();
-			if(isRemove){
-				for (String  boxCode : boxCodeArray) {//循环箱码  //TODO 经测试 暂时无用  2016年11月9日 15:15:20  leol
-					for (String StackBox : StackBoxList) {//循环垛，箱识别码
-						if(boxCode.equals(StackBox)) stringList.add(boxCode);
+			boolean panduan = true;
+				for (String  boxCode : boxCodeArray) {//循环返回的箱码集合
+					for (String StackBox : StackBoxList) {//循环已扫描垛码集合内存储的箱码
+						if(boxCode.equals(StackBox)) {
+							panduan = false;
+							break;
+						}
 					}
 				}
-				StackBoxList.removeAll(stringList);
-   			}else{
-   				StackBoxList.add(mNumberEdt.getText().toString().trim());
-   			}
+				if(panduan)StackBoxList.add(mNumberEdt.getText().toString().trim());
+				else 	DiaLogUtils.showDialog(OutProductActivity.this, "此垛已扫描，请勿重复扫描!", false);
 			overallProductList = outOrder.getWwaybillProducts();
 			overallProductList.remove(overallProduct);
 			overallProduct.setStackCodeList(StackBoxList);
@@ -303,6 +303,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			   finishOutOrders = gson.toJson(finishOutOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);
 			   	DiaLogUtils.showDialog(OutProductActivity.this, "操作成功!", false);
+			   	finish();
 			}else{
 				DiaLogUtils.showDialog(OutProductActivity.this, re , false);
 				//DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);
@@ -643,7 +644,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		}
 	};
 	/**
-	 * 根据箱码获取所在垛的垛码
+	 * 根据箱码获取所在垛的箱码集合
 	 */
 	private Runnable getQueryPileCodesJson = new Runnable() {
 		public void run() {
