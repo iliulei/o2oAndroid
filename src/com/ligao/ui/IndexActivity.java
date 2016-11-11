@@ -122,12 +122,12 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_index);
-
+		// TODO总仓首页
+		//setContentView(R.layout.activity_index); 
+		// TODO分仓首页
+		setContentView(R.layout.activity_index_in); 
 		mHandler = new Handler(getMainLooper()) {
-
 			@Override
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub
@@ -143,16 +143,17 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 							PHOTO_CHANGE_TIME);
 				}
 			}
-
 		};
-		
 		getData();
-		
 		initData();
-
 		findViewById();
 		exitIbt = (ImageButton)findViewById(R.id.ibt_exit);
 		exitIbt.setOnClickListener(indexClickListener);
+		
+		//TODO 主分仓，选择index 需注释此代码
+		inIbt = (ImageButton)findViewById(R.id.ibt_in);
+		inIbt.setOnClickListener(indexClickListener);
+		
 		outIbt = (ImageButton)findViewById(R.id.ibt_out);
 		outIbt.setOnClickListener(indexClickListener);
 		installJamIbt = (ImageButton)findViewById(R.id.ibt_installJam);
@@ -169,14 +170,16 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		public void onClick(View v) {
 			Intent intent;
 			switch (v.getId()) {
-			//退出
-			case R.id.ibt_exit:
+			case R.id.ibt_exit:	//退出
 				finish();
 				break;
-			case R.id.ibt_out:
+			case R.id.ibt_in:	//入库
+				intent = new Intent(IndexActivity.this, InActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.ibt_out://出库
 				intent = new Intent(IndexActivity.this, OutActivity.class);
 				startActivity(intent);
-				ToastUtil.showToast(getApplicationContext(), "开发中，敬请期待！");
 				break;
 			case R.id.ibt_installJam:   
 				intent = new Intent(IndexActivity.this, InstallJamActivity.class);
