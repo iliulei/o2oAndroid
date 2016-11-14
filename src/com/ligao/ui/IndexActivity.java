@@ -29,9 +29,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,10 +48,8 @@ import android.widget.Toast;
 import com.ligao.R;
 import com.ligao.adapter.IndexGalleryAdapter;
 import com.ligao.bean.Configer;
-import com.ligao.entity.Goods;
 import com.ligao.entity.IndexGalleryItemData;
 import com.ligao.ui.base.BaseActivity;
-import com.ligao.utils.CommonTools;
 import com.ligao.utils.ToastUtil;
 import com.ligao.widgets.HomeSearchBarPopupWindow;
 import com.ligao.widgets.HomeSearchBarPopupWindow.onSearchBarItemClickListener;
@@ -113,12 +109,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	private MyAdapter MyAdapter;
 	
 	private ImageButton inIbt,outIbt,installJamIbt,breakAJamIbt,exitIbt,dry,reco;
-	
-	
-	List<Goods> recomendGoods = new ArrayList<Goods>();
-	
-
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -246,19 +236,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 						    
 						    System.out.println(gprice);
 						    
-						    Goods g= new Goods();
-						    g.setGId((Integer) o.getInt("GId"));
-						    g.setCategoryId(o.getInt("categoryId"));
-						    g.setGName(o.getString("GName"));
-						    g.setGDesc(o.getString("GDesc"));
-						    g.setGPrice((Double)o.get("GPrice"));
-						    g.setG_count((Integer)o.getInt("g_count"));
-						    g.setG_reco(o.getString("g_reco"));
-						    g.setGPic(Configer.SERVER_HOST+gpic);
-						    g.setG_integration(o.getInt("g_integration"));
-						    g.setG_discount(o.getInt("g_discount"));
-						    
-						    recomendGoods.add(g);
+						
 						    
 						    mImageUrl = Configer.SERVER_HOST+gpic;
 						    
@@ -303,17 +281,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 		mStormGallery = (Gallery) findViewById(R.id.index_jingqiu_gallery);
 		mPromotionGallery = (Gallery) findViewById(R.id.index_tehui_gallery);
-
-	/*	mSearchBox = (EditText) findViewById(R.id.index_search_edit);
-		mCamerButton = (ImageButton) findViewById(R.id.index_camer_button);
-		mTopLayout = (LinearLayout) findViewById(R.id.index_top_layout);
-		屏蔽头部搜索
-		*/
-		
-//		shake=(ImageButton)findViewById(R.id.index_shake);
-//		
-//		//添加事件
-//		shake.setOnClickListener(indexClickListener);
 	}
 
 	

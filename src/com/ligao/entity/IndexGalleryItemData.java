@@ -1,17 +1,6 @@
 package com.ligao.entity;
 
-/**
- * @author Tau.Chen 陈涛
- * 
- * @email tauchen1990@gmail.com,1076559197@qq.com
- * 
- * @date 2013年9月20日
- * 
- * @version V_1.0.0
- * 
- * @description
- * 
- */
+
 public class IndexGalleryItemData {
 
 	private int id;
