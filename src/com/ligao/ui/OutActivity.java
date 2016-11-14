@@ -399,6 +399,7 @@ public class OutActivity extends Activity implements OnClickListener {
 			downloadOrderList = gson.fromJson(jsonString, type);
 			for (Order order : downloadOrderList) {
 				order.setHandStatus("0");
+				
 				outOrderList.add(order);
 			}
 			SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, gson.toJson(outOrderList));

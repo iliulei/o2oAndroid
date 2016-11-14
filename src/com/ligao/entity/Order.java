@@ -118,6 +118,13 @@ public class Order  implements Serializable{
 	 * 下载时间
 	 */
 	private String DownloadDateTime;
+	
+	/**
+	 * 完成时间(出库成功/删除)
+	 */
+	private String FinishDateTime;
+	
+	
 	/**
 	 * 手持端出库单状态
 	 * 状态 0:未开始   1：进行中  2：已完成  3:删除 
@@ -305,6 +312,17 @@ public class Order  implements Serializable{
 	public void setDownloadDateTime(String downloadDateTime) {
 		DownloadDateTime = downloadDateTime;
 	}
+
+
+	public String getFinishDateTime() {
+		return FinishDateTime;
+	}
+
+
+	public void setFinishDateTime(String finishDateTime) {
+		FinishDateTime = finishDateTime;
+	}
+	
 	
 
 

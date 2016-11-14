@@ -294,7 +294,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 					if(lsOutOrder.getWCode().equals(outOrder.getWCode())){
 						isExist = true;
 						lsOrder = lsOutOrder;
-						break;
+						break; 
 					}
 				}
 			   if(lsOrder!=null)finishOutOrderList.remove(lsOrder);
@@ -302,8 +302,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			   finishOutOrderList.add(outOrder);
 			   finishOutOrders = gson.toJson(finishOutOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);
-			   	DiaLogUtils.showDialog(OutProductActivity.this, "操作成功!", false);
-			   	finish();
+			   	DiaLogUtils.showDialog(OutProductActivity.this, "出库成功,请返回出库单列表页!", false);
 			}else{
 				DiaLogUtils.showDialog(OutProductActivity.this, re , false);
 				//DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);

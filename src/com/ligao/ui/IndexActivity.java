@@ -124,9 +124,9 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// TODO总仓首页
-		//setContentView(R.layout.activity_index); 
+		setContentView(R.layout.activity_index); 
 		// TODO分仓首页
-		setContentView(R.layout.activity_index_in); 
+		//setContentView(R.layout.activity_index_in); 
 		mHandler = new Handler(getMainLooper()) {
 			@Override
 			public void handleMessage(Message msg) {
@@ -151,8 +151,8 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 		exitIbt.setOnClickListener(indexClickListener);
 		
 		//TODO 主分仓，选择index 需注释此代码
-		inIbt = (ImageButton)findViewById(R.id.ibt_in);
-		inIbt.setOnClickListener(indexClickListener);
+		//inIbt = (ImageButton)findViewById(R.id.ibt_in);
+		//inIbt.setOnClickListener(indexClickListener);
 		
 		outIbt = (ImageButton)findViewById(R.id.ibt_out);
 		outIbt.setOnClickListener(indexClickListener);

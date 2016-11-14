@@ -1,6 +1,7 @@
 package com.ligao.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class Product implements Serializable{
 	/**
 	 * 箱码集合
 	 */
-	private List<String> BoxCodeList;
+	private List<String> BoxCodeList ;
 	/**
 	 * 垛码集合
 	 */
