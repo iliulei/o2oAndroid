@@ -2,12 +2,7 @@ package com.ligao.ui;
 
 import java.util.ArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -19,27 +14,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ligao.R;
-import com.ligao.app.MyApplication;
 import com.ligao.bean.Configer;
 import com.ligao.bean.Constants;
-import com.ligao.entity.Goods;
-import com.ligao.entity.User;
-import com.ligao.shoppingcart.CheckOutActivity;
-import com.ligao.shoppingcart.ShopBean;
-import com.ligao.shoppingcart.ShoppingCanst;
 import com.ligao.ui.base.BaseActivity;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.SpUtil;
 import com.ligao.utils.ToastUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 组垛

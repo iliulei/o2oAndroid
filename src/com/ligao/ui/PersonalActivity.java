@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ligao.R;
-import com.ligao.AddressManageActivity;
 import com.ligao.IntegrationActivity;
 import com.ligao.app.MyApplication;
 import com.ligao.entity.User;
@@ -110,11 +109,11 @@ public class PersonalActivity extends BaseActivity implements OnClickListener {
 			break;
 
 		case R.id.personal_register_button:
-			mIntent = new Intent(PersonalActivity.this,
+		/*	mIntent = new Intent(PersonalActivity.this,
 					RegisterRegisterActivity.class);
 
 			startActivityForResult(mIntent, LOGIN_CODE);
-			break;
+			break;*/
 			
 		/*case R.id.orderselect:
 //			ToastUtil.showToast(this, "订单管理");

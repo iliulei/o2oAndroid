@@ -267,13 +267,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 						    mImageUrls.add(mImageUrl);
 						    
 						}
-						
-						
-						
 						System.out.println("mImageUrls : "+mImageUrls.size());
-						
-						
-						
 						initView();
 //						MyAdapter.notifyDataSetChanged();
 						
@@ -341,7 +335,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
 		// ======= 初始化ViewPager ========
-		//轮播图设置一个固定图片地址
+		//TODO 轮播图设置一个固定图片地址
 		mImageUrls.add("http://pic.58pic.com/58pic/16/88/34/33e58PICt8q_1024.jpg");
 		
 		mIndicators = new ImageView[mImageUrls.size()];
