@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -65,6 +66,7 @@ import com.ligao.entity.Goods;
 import com.ligao.entity.JsonInfo;
 import com.ligao.entity.Order;
 import com.ligao.entity.Product;
+import com.ligao.utils.DateUtil;
 import com.ligao.utils.DiaLogUtils;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.SpUtil;
@@ -299,10 +301,13 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				}
 			   if(lsOrder!=null)finishOutOrderList.remove(lsOrder);
 			   outOrder.setHandStatus("2");//进行中
+			   outOrder.setFinishDateTime(DateUtil.sdf.format(new Date()));//完成时间
 			   finishOutOrderList.add(outOrder);
 			   finishOutOrders = gson.toJson(finishOutOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);
-			   	DiaLogUtils.showDialog(OutProductActivity.this, "出库成功,请返回出库单列表页!", false);
+			   ToastUtil.showToast(getApplicationContext(), "出库成功!");
+			   //	DiaLogUtils.showDialog(OutProductActivity.this, "出库成功,请返回出库单列表页!", false);
+			   finish();
 			}else{
 				DiaLogUtils.showDialog(OutProductActivity.this, re , false);
 				//DiaLogUtils.showDialog(OutProductActivity.this, "出库遇到错误!", false);

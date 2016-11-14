@@ -63,11 +63,11 @@ public class Product implements Serializable{
 	/**
 	 * 箱码集合
 	 */
-	private List<String> BoxCodeList ;
+	private List<String> BoxCodeList = new ArrayList<String>();
 	/**
 	 * 垛码集合
 	 */
-	private  List<String> StackCodeList;
+	private  List<String> StackCodeList = new ArrayList<String>();
 	/**
 	 * 单品码集合
 	 */

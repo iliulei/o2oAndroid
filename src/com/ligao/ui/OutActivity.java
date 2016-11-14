@@ -64,6 +64,7 @@ import com.ligao.entity.Goods;
 import com.ligao.entity.JsonInfo;
 import com.ligao.entity.Order;
 import com.ligao.entity.Product;
+import com.ligao.utils.DateUtil;
 import com.ligao.utils.DiaLogUtils;
 import com.ligao.utils.KsoapUtil;
 import com.ligao.utils.SpUtil;
@@ -197,7 +198,7 @@ public class OutActivity extends Activity implements OnClickListener {
 		}
 	}
 	/**
-	 * 长按listview方法
+	 * 长按listview方法 删除订单
 	 * @author Administrator
 	 *
 	 */
@@ -266,11 +267,11 @@ public class OutActivity extends Activity implements OnClickListener {
 										}
 									}
 								   if(lsOrder!=null)deleteOutOrderList.remove(lsOrder);
-								   outOrder.setHandStatus("3");//进行中
+								   outOrder.setHandStatus("3");//删除
+								   outOrder.setFinishDateTime(DateUtil.sdf.format(new Date()));//删除时间
 								   deleteOutOrderList.add(outOrder);
 								   deleteOutOrders = gson.toJson(deleteOutOrderList);
 								   SpUtil.putString(getApplicationContext(), Constants.DELETE_OUT_ORDERS, deleteOutOrders);
-								   
 								   loadOutOrder();
 							}
 						})
@@ -398,8 +399,8 @@ public class OutActivity extends Activity implements OnClickListener {
 			List<Order> downloadOrderList = new ArrayList<Order>();
 			downloadOrderList = gson.fromJson(jsonString, type);
 			for (Order order : downloadOrderList) {
-				order.setHandStatus("0");
-				
+				order.setHandStatus("0");//手持端状态
+				order.setDownloadDateTime(DateUtil.sdf.format(new Date()));//下载时间
 				outOrderList.add(order);
 			}
 			SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, gson.toJson(outOrderList));
