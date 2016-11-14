@@ -58,6 +58,10 @@ public class Constants {
 		 */
 		public static final String SERVER_SETTING_PORT = "server_setting_port";
 		/**
+		 * 缓存天数
+		 */
+		public static final String SERVER_SETTING_CACHEDAYS = "server_setting_cachedays";
+		/**
 		 * 项目名称
 		 */
 		public static final String SERVER_SETTING_PROJECTNAME = "server_setting_projectname";

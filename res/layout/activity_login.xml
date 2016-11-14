@@ -73,7 +73,6 @@
                         android:paddingRight="30dp"
                         android:textColor="#ff3b3b3b"
                         android:textSize="16.0sp" 
-                         android:text="001"
                         >
                     </EditText>
                 </LinearLayout>
@@ -108,7 +107,6 @@
                         android:paddingRight="30dp"
                         android:textColor="#ff3b3b3b"
                         android:textSize="16.0sp" 
-                         android:text="123456"
                         >
                     </EditText>
                 </LinearLayout>

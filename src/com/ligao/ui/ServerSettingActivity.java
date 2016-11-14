@@ -27,10 +27,10 @@ import com.ligao.utils.ToastUtil;
  */
 public class ServerSettingActivity extends BaseActivity implements OnClickListener {
 
-	private EditText serversettingsaddressEdt,portEdt,projectnameEdt;
+	private EditText serversettingsaddressEdt,portEdt,projectnameEdt,cacheDaysEdt;
 	private Button submitBtn;
 	private Intent mIntent;
-	String serversettingsaddress,port,projectname;
+	String serversettingsaddress,port,projectname,cacheDays;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class ServerSettingActivity extends BaseActivity implements OnClickListen
 	protected void findViewById() {
 		serversettingsaddressEdt = (EditText) this.findViewById(R.id.edt_serversettingsAddress);
 		portEdt = (EditText) this.findViewById(R.id.edt_port);
+		cacheDaysEdt =  (EditText) this.findViewById(R.id.edt_cacheDays);
 		//projectnameEdt = (EditText) this.findViewById(R.id.edt_projectname);
 		submitBtn = (Button) this.findViewById(R.id.bt_serversettingSubmit);
 	}
@@ -53,11 +54,14 @@ public class ServerSettingActivity extends BaseActivity implements OnClickListen
 	protected void initView() {
 		serversettingsaddress = SpUtil.getString(getApplicationContext(), Constants.SERVER_SETTING_ADDRESS, "");
 		port = SpUtil.getString(getApplicationContext(), Constants.SERVER_SETTING_PORT, "");
+		cacheDays =  SpUtil.getString(getApplicationContext(), Constants.SERVER_SETTING_CACHEDAYS, "7");
 		//projectname = SpUtil.getString(getApplicationContext(), Constants.SERVER_SETTING_PROJECTNAME, "");
 		serversettingsaddressEdt.setText(serversettingsaddress);
 		portEdt.setText(port);
+		cacheDaysEdt.setText(cacheDays);
 		//projectnameEdt.setText(projectname);
 		submitBtn.setOnClickListener(this);
+		
 	}
 
 	@Override
@@ -75,6 +79,7 @@ public class ServerSettingActivity extends BaseActivity implements OnClickListen
 	private void submitBtn() {
 		serversettingsaddress = serversettingsaddressEdt.getText().toString();
 		port =  portEdt.getText().toString();
+		cacheDays =  cacheDaysEdt.getText().toString();
 		//projectname = projectnameEdt.getText().toString();
 		
 		if(serversettingsaddress ==null||serversettingsaddress.equals("")){
@@ -83,7 +88,10 @@ public class ServerSettingActivity extends BaseActivity implements OnClickListen
 			ToastUtil.showToast(getApplicationContext(), "端口号不允许为空!");
 		}/*else if(projectname==null||projectname.equals("")){
 			ToastUtil.showToast(getApplicationContext(), "项目名称不允许为空!");
-		}*/else{
+		}*/
+		else if(cacheDays==null||cacheDays.equals("")){
+			ToastUtil.showToast(getApplicationContext(), "缓存天数不允许为空!");
+		}else{
 			myurl = Configer.getServerAddress(getApplicationContext())+"/login.action";
 			new Thread(getJson).start();
 		}
@@ -95,6 +103,7 @@ public class ServerSettingActivity extends BaseActivity implements OnClickListen
 				
 				SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_ADDRESS,serversettingsaddress.trim());
 				SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_PORT,port.trim());
+				SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_CACHEDAYS,cacheDays.trim());
 				//SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_PROJECTNAME,projectname.trim());
 				ToastUtil.showToast(getApplicationContext(), "连接服务器成功，保存服务器地址!");
 				finish();

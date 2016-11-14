@@ -110,9 +110,13 @@ public class OutActivity extends Activity implements OnClickListener {
 		listview = (ListView) this.findViewById(R.id.listview);
 		listview.setEmptyView(findViewById(R.id.layout_empty));
 		loadOutOrder();
+		
+		try {
+			deleteCache();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
 	
 
 	private void initView() {
@@ -480,6 +484,50 @@ public class OutActivity extends Activity implements OnClickListener {
 		loadOutOrder();
 		super.onStart();
 	}
+	
+
+	/**
+	 * 删除已完成和已删除状态的缓存订单超过保存天数的数据
+	 * 2016年11月14日 15:15:12
+	 * @throws Exception 
+	 */
+	private void deleteCache() throws Exception {
+		Integer cacheDays =  Integer.parseInt(SpUtil.getString(getApplicationContext(), Constants.SERVER_SETTING_CACHEDAYS, "7"));
+		String finishOutOrders = SpUtil.getString(getApplicationContext(),
+				Constants.FINISH_OUT_ORDERS, "");
+		String deleteOutOrders = SpUtil.getString(getApplicationContext(),
+				Constants.DELETE_OUT_ORDERS, "");
+		List<Order> outOrderList = new ArrayList<Order>();
+		if(!"".equals(finishOutOrders)){//发货完成订单处理
+			List<Order> finishOutOrderList = (List<Order>)gson.fromJson(finishOutOrders, type);
+			for (Order order : finishOutOrderList) {
+					String finishDate = order.getFinishDateTime();//出库单完成日期
+					String nowDate = DateUtil.sdf.format(new Date());//当前时间
+					int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
+					if(days>cacheDays){//超过缓存天数
+						finishOutOrderList.remove(order);//删除订单
+					}
+			}
+			finishOutOrders = gson.toJson(finishOutOrderList);
+			SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);//保存出库完成出库单缓存数据
+		}
+		
+		if(!"".equals(deleteOutOrders)){//被删除订单处理
+			List<Order> deleteOutOrderList = (List<Order>)gson.fromJson(deleteOutOrders, type);
+			for (Order order : deleteOutOrderList) {
+					String finishDate = order.getFinishDateTime();//出库单完成日期
+					String nowDate = DateUtil.sdf.format(new Date());//当前时间
+					int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
+					if(days>cacheDays){//超过缓存天数
+						deleteOutOrderList.remove(order);//删除订单
+					}
+			}
+			deleteOutOrders = gson.toJson(deleteOutOrderList);
+			SpUtil.putString(getApplicationContext(), Constants.DELETE_OUT_ORDERS, deleteOutOrders);//保存已被删除出库单缓存数据
+		}
+	}
+
+
 	
 	/**
 	 * 操作按钮点击事件  dilog方式，（下载出库单，加载出库单） 2016年11月4日 14:39:19
