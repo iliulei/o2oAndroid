@@ -1,6 +1,7 @@
 package com.ligao.ui;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +71,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private Gson gson = new Gson();
 	private BroadcastReceiver mReceiver;
     private IntentFilter mFilter;
-	
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -271,7 +272,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 				}
 			   if(lsOrder!=null)finishOutOrderList.remove(lsOrder);
 			   outOrder.setHandStatus("2");//进行中
-			   outOrder.setFinishDateTime(DateUtil.sdf.format(new Date()));//完成时间
+			   outOrder.setFinishDateTime(sdf.format(new Date()));//完成时间
 			   finishOutOrderList.add(outOrder);
 			   finishOutOrders = gson.toJson(finishOutOrderList);
 			   SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);

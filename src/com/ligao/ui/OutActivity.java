@@ -2,12 +2,13 @@ package com.ligao.ui;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.ksoap2.serialization.SoapObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -64,7 +65,7 @@ public class OutActivity extends Activity implements OnClickListener {
 	private List<String> list = new ArrayList<String>();
 	private Gson gson = new Gson();
 	Type type = new TypeToken<ArrayList<Order>>() {}.getType();
-	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 	int ii = 0;
 	
 	@Override
@@ -243,7 +244,7 @@ public class OutActivity extends Activity implements OnClickListener {
 									}
 								   if(lsOrder!=null)deleteOutOrderList.remove(lsOrder);
 								   outOrder.setHandStatus("3");//删除
-								   outOrder.setFinishDateTime(DateUtil.sdf.format(new Date()));//删除时间
+								   outOrder.setFinishDateTime(sdf.format(new Date()));//删除时间
 								   deleteOutOrderList.add(outOrder);
 								   deleteOutOrders = gson.toJson(deleteOutOrderList);
 								   SpUtil.putString(getApplicationContext(), Constants.DELETE_OUT_ORDERS, deleteOutOrders);
@@ -375,7 +376,7 @@ public class OutActivity extends Activity implements OnClickListener {
 			downloadOrderList = gson.fromJson(jsonString, type);
 			for (Order order : downloadOrderList) {
 				order.setHandStatus("0");//手持端状态
-				order.setDownloadDateTime(DateUtil.sdf.format(new Date()));//下载时间
+				order.setDownloadDateTime(sdf.format(new Date()));//下载时间
 				outOrderList.add(order);
 			}
 			SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, gson.toJson(outOrderList));
@@ -471,13 +472,15 @@ public class OutActivity extends Activity implements OnClickListener {
 		List<Order> outOrderList = new ArrayList<Order>();
 		if(!"".equals(finishOutOrders)){//发货完成订单处理
 			List<Order> finishOutOrderList = (List<Order>)gson.fromJson(finishOutOrders, type);
-			for (Order order : finishOutOrderList) {
-					String finishDate = order.getFinishDateTime();//出库单完成日期
-					String nowDate = DateUtil.sdf.format(new Date());//当前时间
-					int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
-					if(days>cacheDays){//超过缓存天数
-						finishOutOrderList.remove(order);//删除订单
-					}
+			Iterator<Order> iterator = finishOutOrderList.iterator();
+			while (iterator.hasNext()) {
+				Order order = (Order) iterator.next();
+				String finishDate = order.getFinishDateTime();//出库单完成日期
+				String nowDate = sdf.format(new Date());//当前时间
+				int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
+				if(days>cacheDays){//超过缓存天数
+					iterator.remove();
+				}
 			}
 			finishOutOrders = gson.toJson(finishOutOrderList);
 			SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, finishOutOrders);//保存出库完成出库单缓存数据
@@ -485,17 +488,33 @@ public class OutActivity extends Activity implements OnClickListener {
 		
 		if(!"".equals(deleteOutOrders)){//被删除订单处理
 			List<Order> deleteOutOrderList = (List<Order>)gson.fromJson(deleteOutOrders, type);
-			for (Order order : deleteOutOrderList) {
-					String finishDate = order.getFinishDateTime();//出库单完成日期
-					String nowDate = DateUtil.sdf.format(new Date());//当前时间
-					int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
-					if(days>cacheDays){//超过缓存天数
-						deleteOutOrderList.remove(order);//删除订单
-					}
+			Iterator<Order> iterator = deleteOutOrderList.iterator();
+			while (iterator.hasNext()) {
+				Order order = (Order) iterator.next();
+				String finishDate = order.getFinishDateTime();//出库单完成日期
+				String nowDate = sdf.format(new Date());//当前时间
+				int days = DateUtil.daysBetween(finishDate, nowDate);//间隔天数
+				if(days>cacheDays){//超过缓存天数
+					iterator.remove();
+				}
 			}
 			deleteOutOrders = gson.toJson(deleteOutOrderList);
 			SpUtil.putString(getApplicationContext(), Constants.DELETE_OUT_ORDERS, deleteOutOrders);//保存已被删除出库单缓存数据
 		}
+	}
+	
+	/**
+	 * 出库单迭代器转换为LIST
+	 * @param iterator
+	 * @return
+	 */
+	public List<Order> copyIterator(Iterator<Order> iterator){
+		List<Order> outOrderList = new ArrayList<Order>();
+		while (iterator.hasNext()) {
+			Order order = (Order) iterator.next();
+			outOrderList.add(order);
+		}
+		return outOrderList;
 	}
 
 
