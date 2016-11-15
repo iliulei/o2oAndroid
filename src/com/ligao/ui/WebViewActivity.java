@@ -21,7 +21,10 @@ public class WebViewActivity extends Activity  {
 	 private void init(){
 	        webView = (WebView) findViewById(R.id.webView);
 	        //WebView加载web资源
-	       webView.loadUrl("http://www.realgoal.com.cn/");
+	       
+	        //http://www.realgoal.com.cn/
+	        webView.loadUrl("http://h1.rrxiu.me/v/rqlb1l?iframe=1&from_code=53150ab529dbf287a98b20eb75926075");
+	       
 	       WebSettings settings = webView.getSettings();
 	       settings.setJavaScriptEnabled(true);
 	       settings.setUseWideViewPort(true); 
