@@ -171,11 +171,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				intent = new Intent(IndexActivity.this, OutActivity.class);
 				startActivity(intent);
 				break;
-			case R.id.ibt_installJam:   
+			case R.id.ibt_installJam:   //组垛
 				intent = new Intent(IndexActivity.this, InstallJamActivity.class);
 				startActivity(intent);
 				break;
-			case R.id.ibt_breakAJam:
+			case R.id.ibt_breakAJam://拆垛
 				intent = new Intent(IndexActivity.this, BreakAJamActivity.class);
 				startActivity(intent);
 				break;
@@ -471,7 +471,13 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 		@Override
 		public Object instantiateItem(View container, int position) {
-			ImageLoader.getInstance().displayImage(mImageUrls.get(position),
+			//TODO 解析HTML图片地址修改  2016年11月15日 10:24:11 Leo.L
+			//"drawable://" + R.drawable.index_gallery_03;  本地图片地址
+			//下行代码为解析集合内HTML地址图片展示
+			/*ImageLoader.getInstance().displayImage(mImageUrls.get(position),
+					mImageViews[position]);
+					*/
+			ImageLoader.getInstance().displayImage("drawable://" + R.drawable.niunai002,
 					mImageViews[position]);
 			
 			final Data posi = new Data();
