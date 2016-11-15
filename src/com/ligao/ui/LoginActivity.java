@@ -61,7 +61,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	String password;
 	String verifycode;
 	private CheckBox rememberme,autologin;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -71,9 +70,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		initView();
 		
 		//TODO 测试使用 默认添加服务器地址  2016年11月9日 13:28:57 leol
-		/*SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_ADDRESS,"192.168.170.119");
+		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_ADDRESS,"192.168.170.119");
 		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_PORT,"8065");
-		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_CACHEDAYS,"7");*/
+		SpUtil.putString(getApplicationContext(),Constants.SERVER_SETTING_CACHEDAYS,"7");
 	}
 
 	@Override
