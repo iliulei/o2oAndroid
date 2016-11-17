@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.ksoap2.serialization.SoapObject;
 import android.annotation.SuppressLint;
@@ -441,7 +442,70 @@ public class OutActivity extends Activity implements OnClickListener {
 		if(!"".equals(outOrders)){
 			outOrderList.addAll((List<Order>)gson.fromJson(outOrders, type));
 		}
+		//创建测试数据begin
+		//testXml();
+		//创建测试数据end
 		initView();
+	}
+	
+	boolean testXmlBoo =true;
+	/**
+	 * 测试XML缓存大小, 生成数据
+	 */
+	void  testXml(){
+		if(testXmlBoo){
+			testXmlBoo =false;
+		List<Order> testStartOrderList = new ArrayList<Order>();
+		List<Order> testnotStartOrderList = new ArrayList<Order>();
+		List<Order> testFinishOrderList = new ArrayList<Order>();
+		List<Order> testDeleteOrderList = new ArrayList<Order>();
+		
+		for(int i = 0 ;i<100;i++){
+			for (Order order : outOrderList) {
+				order.setState(1);
+				order.setHandStatus("1");
+				order.setWCode(sdf.format(new Date()));
+				testStartOrderList.add(order);
+			}
+		}
+		String testStartOrders = gson.toJson(testStartOrderList);
+		SpUtil.putString(getApplicationContext(), Constants.START_OUT_ORDERS, testStartOrders);
+		
+		
+		for(int i = 0 ;i<100;i++){
+			for (Order order : outOrderList) {
+				order.setState(1);
+				order.setHandStatus("0");
+				order.setWCode(sdf.format(new Date()));
+				testnotStartOrderList.add(order);
+			}
+		}
+		String testnotStartOrders = gson.toJson(testnotStartOrderList);
+		SpUtil.putString(getApplicationContext(), Constants.NOT_START_OUT_ORDERS, testnotStartOrders);
+		
+		for(int i = 0 ;i<100;i++){
+			for (Order order : outOrderList) {
+				order.setState(2);
+				order.setHandStatus("2");
+				order.setWCode(sdf.format(new Date()));
+				testFinishOrderList.add(order);
+			}
+		}
+		String testFinishOrders = gson.toJson(testFinishOrderList);
+		SpUtil.putString(getApplicationContext(), Constants.FINISH_OUT_ORDERS, testFinishOrders);
+		
+		for(int i = 0 ;i<100;i++){
+			for (Order order : outOrderList) {
+				order.setState(1);
+				order.setHandStatus("3");
+				order.setWCode(sdf.format(new Date()));
+				testDeleteOrderList.add(order);
+			}
+		}
+		String testDeleteOrders = gson.toJson(testDeleteOrderList);
+		SpUtil.putString(getApplicationContext(), Constants.DELETE_OUT_ORDERS, testDeleteOrders);
+	
+	}
 	}
 
 	
@@ -516,40 +580,5 @@ public class OutActivity extends Activity implements OnClickListener {
 		}
 		return outOrderList;
 	}
-
-
 	
-	/**
-	 * 操作按钮点击事件  dilog方式，（下载出库单，加载出库单） 2016年11月4日 14:39:19
-	private void operation() {
-		
-		new AlertDialog.Builder(OutActivity.this)
-				.setTitle("操作提示")
-				// 设置对话框标题
-				.setMessage("请选择操作类型！")
-				// 设置显示的内容
-				.setPositiveButton("下载出库单",
-						new DialogInterface.OnClickListener() {// 添加下载出库单按钮
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {// 下载出库单按钮的响应事件
-								new Thread(getOutOrderJson).start();
-							}
-						})
-				.setNegativeButton("加载出库单",
-						new DialogInterface.OnClickListener() {// 添加加载出库单按钮
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {// 响应事件
-								loadOutOrder();
-								ToastUtil.showToast(getApplicationContext(),
-										"加载");
-
-							}
-
-						}).show();// 在按键响应事件中显示此对话框
-
-	}*/
-
 }
