@@ -431,7 +431,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
         	   panduan = false;
         	   return false;
            }
-           barCode = barCode.substring(1, 7);  //7为条码截取长度,截取出的字符串为产品编码
+           barCode = barCode.substring(1, 7);  //截取出的字符串中的产品编码
            for (Product product : outOrder.getWwaybillProducts()) {
         	   if(product.getPCode().equals(barCode))
         	   { 	
@@ -513,7 +513,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
      * 计算总共扫瞄量
      */
 	   private void CountMessage(){
-		   int singleCount = 0, stackCount = 0;
+		   int singleCount = 0, stackCount = 0,dpSingleCount = 0;
 		   
 		   System.out.println(overallProductList);
 		   if(overallProductList.size()!=0){
@@ -524,8 +524,10 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			   singleCount += product.getBoxCodeList().size();
 			   if(product.getStackCodeList()!=null)
                stackCount += product.getStackCodeList().size();
+			   if(product.getDpSingleCodeList()!=null)
+			   dpSingleCount += product.getDpSingleCodeList().size();
 		   }
-		   String text = "已扫瞄:"+stackCount+"垛"+singleCount+"箱";
+		   String text = "已扫瞄:"+stackCount+"垛"+singleCount+"箱"+dpSingleCount+"单品";
 		   scanNumberTv.setText(text);
        }
 	   /**

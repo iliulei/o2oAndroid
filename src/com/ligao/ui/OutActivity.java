@@ -537,7 +537,7 @@ public class OutActivity extends Activity implements OnClickListener {
 		if(!"".equals(finishOutOrders)){//发货完成订单处理
 			List<Order> finishOutOrderList = (List<Order>)gson.fromJson(finishOutOrders, type);
 			Iterator<Order> iterator = finishOutOrderList.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext()) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 				Order order = (Order) iterator.next();
 				String finishDate = order.getFinishDateTime();//出库单完成日期
 				String nowDate = sdf.format(new Date());//当前时间
