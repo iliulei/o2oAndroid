@@ -71,7 +71,7 @@ public class Product implements Serializable{
 	/**
 	 * 单品码集合
 	 */
-	private  List<String> dpSingleCodeList;
+	private  List<String> dpSingleCodeList = new ArrayList<String>();
 	/**
 	 * 
 	 */

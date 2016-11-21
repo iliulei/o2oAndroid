@@ -189,21 +189,35 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	 */
 	private void existsBarCodeExecute(String re) {
 		System.out.println("LeoL 验证条形码是否存在RE输出:"+re);
-		
-		if("0".equals(re)){
-			if(isStackCb.isChecked()){//勾选,垛
-				new Thread(getQueryPileCodesJson).start();
-   			}else{//未勾选,箱
-   				overallProductList = outOrder.getWwaybillProducts();
-   				overallProductList.remove(overallProduct);
-   				BoxList.add(mNumberEdt.getText().toString().trim());
-   				overallProduct.setBoxCodeList(BoxList);
-   				overallProductList.add(overallProduct);
-   				CountMessage();
-   				LocalizationInformation();
-   			}
-		}
-		else{
+		if("0".equals(re)){//0代表存在
+			String barCode = mNumberEdt.getText().toString().trim();
+			String barCodeType = barCode.substring(0,1);//码类型   1为单品码，2为箱码，3为垛码
+			if(barCodeType.equals("1")){
+				if(isStackCb.isChecked()){
+					DiaLogUtils.showDialog(OutProductActivity.this, "此码为单品码类型，请勿勾选整垛出库选项!", false);
+				}else{//单品
+					overallProductList = outOrder.getWwaybillProducts();
+	   				overallProductList.remove(overallProduct);
+	   				dpSingleList.add(barCode);
+	   				overallProduct.setDpSingleCodeList(BoxList);
+	   				overallProductList.add(overallProduct);
+	   				CountMessage();
+	   				LocalizationInformation();
+				}
+			}if(barCodeType.equals("2")){
+				if(isStackCb.isChecked()){//勾选,垛
+					new Thread(getQueryPileCodesJson).start();
+	   			}else{//未勾选,箱
+	   				overallProductList = outOrder.getWwaybillProducts();
+	   				overallProductList.remove(overallProduct);
+	   				BoxList.add(barCode);
+	   				overallProduct.setBoxCodeList(BoxList);
+	   				overallProductList.add(overallProduct);
+	   				CountMessage();
+	   				LocalizationInformation();
+	   			}
+			}
+		}else{
 			DiaLogUtils.showDialog(OutProductActivity.this, re, false);
 		}
 	}
@@ -454,6 +468,7 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	   private void BarCodeIsRepeat(final String barCode){
 		    isRemove = false;
 		   List<Product> productList =  outOrder.getWwaybillProducts(); //产品集合
+		   
            for (Product product : productList) {
         	   
         	   if(!product.getPCode().equals(barCode.substring(1, 7))) continue;//判断产品和箱码是否对应
@@ -461,17 +476,18 @@ public class OutProductActivity extends Activity implements OnClickListener {
         	   overallProduct = product;
         	   list = isStackCb.isChecked()?product.getStackCodeList() : product.getBoxCodeList();//垛，箱区分
         	   BoxList = product.getBoxCodeList() !=null ? product.getBoxCodeList() : new ArrayList<String>();
-        	   StackBoxList =product.getStackCodeList() !=null ? product.getStackCodeList() : new ArrayList<String>();
+        	   StackBoxList = product.getStackCodeList() !=null ? product.getStackCodeList() : new ArrayList<String>();
+        	   dpSingleList = product.getDpSingleCodeList() !=null ? product.getDpSingleCodeList() : new ArrayList<String>();
         	   
         	   findResult = BoxList.indexOf(barCode);
         	   findStackResult = StackBoxList.indexOf(barCode);
+        	   findDpSingleResult = dpSingleList.indexOf(barCode);
         	   
-        	   
-        	   if(findResult !=-1 || findStackResult != -1){
+        	   if(findResult !=-1 || findStackResult != -1 || findDpSingleResult != -1){
 	        	  new AlertDialog.Builder(OutProductActivity.this)
 	   				.setTitle("操作提示")
 	   				// 设置对话框标题
-	   				.setMessage("此箱码已扫描出库，是否移除此箱码出库信息?")
+	   				.setMessage("此码已扫描出库，是否移除此码出库信息?")
 	   				// 设置显示的内容
 	   				.setPositiveButton("确定",
 	   						new DialogInterface.OnClickListener() {
@@ -482,11 +498,14 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	   								overallProductList = outOrder.getWwaybillProducts();
 		   			   				overallProductList.remove(overallProduct);
 		   							  if (findResult != -1)  { 
-		   								  BoxList.remove(barCode);
-		   								  overallProduct.setBoxCodeList(BoxList);
-		   							  } else{
-		   								  StackBoxList.remove(barCode);
-		   								  overallProduct.setStackCodeList(StackBoxList);
+		   								  	BoxList.remove(barCode);
+		   								  	overallProduct.setBoxCodeList(BoxList);
+		   							   } else  if (findStackResult != -1){
+		   								  	StackBoxList.remove(barCode);
+		   								  	overallProduct.setStackCodeList(StackBoxList);
+		   							   }else  if (findDpSingleResult != -1){
+		   								   dpSingleList.remove(barCode);
+		   								   overallProduct.setDpSingleCodeList(dpSingleList);
 		   							   }
 		   							  isRemove = true;
 	   			   				overallProductList.add(overallProduct);
@@ -673,7 +692,8 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	private boolean isRemove;
 	private int findResult;
 	private int findStackResult;
-	private List<String> BoxList,StackBoxList,list = new ArrayList<String>();
+	private int findDpSingleResult;
+	private List<String> BoxList,StackBoxList,dpSingleList,list = new ArrayList<String>();
 	
 	   @Override
 	    protected void onResume() {
