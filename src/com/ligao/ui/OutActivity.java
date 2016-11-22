@@ -74,7 +74,7 @@ public class OutActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.out_order_list);
-
+		
 		gobackTv = (TextView) findViewById(R.id.go_back);
 		operationBt = (Button) findViewById(R.id.bt_operation);
 		gobackTv.setOnClickListener(this);
