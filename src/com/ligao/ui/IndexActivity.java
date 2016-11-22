@@ -202,7 +202,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	{
 
 		public void run() {
-			// TODO Auto-generated method stub
 			try
 			{
 				
@@ -268,7 +267,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	protected void findViewById() {
-		// TODO Auto-generated method stub
 		mIndexHour = (TextView) findViewById(R.id.index_miaosha_hour);
 		mIndexMin = (TextView) findViewById(R.id.index_miaosha_min);
 		mIndexSeconds = (TextView) findViewById(R.id.index_miaosha_seconds);
@@ -289,7 +287,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 	@Override
 	protected void initView() {
 		
-		// TODO Auto-generated method stub
 		ImageLoader.getInstance().displayImage(
 				"drawable://" + R.drawable.miaosha, mMiaoShaImage);
 
@@ -347,7 +344,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if (mImageUrls.size() == 0 || mImageUrls.size() == 1)
 					return true;
 				else
@@ -475,8 +471,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 			//"drawable://" + R.drawable.index_gallery_03;  本地图片地址
 			//下行代码为解析集合内HTML地址图片展示
 			/*ImageLoader.getInstance().displayImage(mImageUrls.get(position),
-					mImageViews[position]);
-					*/
+					mImageViews[position]);*/
 			ImageLoader.getInstance().displayImage("drawable://" + R.drawable.niunai002,
 					mImageViews[position]);
 			
@@ -558,7 +553,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		//相机
 /*		case R.id.index_camer_button:
@@ -578,7 +572,6 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onBarCodeButtonClick() {
-		// TODO Auto-generated method stub
 //		CommonTools.showShortToast(this, "条码购");
 //		mIntent=new Intent(IndexActivity.this, CaptureActivity.class);
 //		startActivity(mIntent);
@@ -586,13 +579,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 
 //	@Override
 //	public void onCameraButtonClick() {
-//		// TODO Auto-generated method stub
 ////		CommonTools.showShortToast(this, "拍照购");
 //	}
 
 	@Override
 	public void onColorButtonClick() {
-		// TODO Auto-generated method stub
 //		CommonTools.showShortToast(this, "颜色购");
 	}
 	
@@ -632,13 +623,10 @@ public class IndexActivity extends BaseActivity implements OnClickListener,
 				// 获取出现错误
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return strResult;

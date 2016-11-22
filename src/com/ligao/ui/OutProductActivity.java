@@ -193,17 +193,6 @@ public class OutProductActivity extends Activity implements OnClickListener {
 			String barCode = mNumberEdt.getText().toString().trim();
 			String barCodeType = barCode.substring(0,1);//码类型   1为单品码，2为箱码，3为垛码
 			if(barCodeType.equals("1")){
-				if(isStackCb.isChecked()){
-					DiaLogUtils.showDialog(OutProductActivity.this, "此码为单品码类型，请勿勾选整垛出库选项!", false);
-				}else{//单品
-					overallProductList = outOrder.getWwaybillProducts();
-	   				overallProductList.remove(overallProduct);
-	   				dpSingleList.add(barCode);
-	   				overallProduct.setDpSingleCodeList(BoxList);
-	   				overallProductList.add(overallProduct);
-	   				CountMessage();
-	   				LocalizationInformation();
-				}
 			}if(barCodeType.equals("2")){
 				if(isStackCb.isChecked()){//勾选,垛
 					new Thread(getQueryPileCodesJson).start();
@@ -469,6 +458,9 @@ public class OutProductActivity extends Activity implements OnClickListener {
 		    isRemove = false;
 		   List<Product> productList =  outOrder.getWwaybillProducts(); //产品集合
 		   
+			String barCodeType = barCode.substring(0,1);//码类型   1为单品码，2为箱码，3为垛码
+			
+		   
            for (Product product : productList) {
         	   
         	   if(!product.getPCode().equals(barCode.substring(1, 7))) continue;//判断产品和箱码是否对应
@@ -519,13 +511,24 @@ public class OutProductActivity extends Activity implements OnClickListener {
 	   					}
 	   				}).show();// 在按键响应事件中显示此对话框
         	   }else{
-        		   new Thread(getExistsBarCodeJson).start();
+        		   if(barCodeType.equals("1")){//单品码
+	       				if(isStackCb.isChecked()){
+	    					DiaLogUtils.showDialog(OutProductActivity.this, "此码为单品码类型，请勿勾选整垛出库选项!", false);
+	    				}else{//单品
+	    					overallProductList = outOrder.getWwaybillProducts();
+	    	  				overallProductList.remove(overallProduct);
+	    	  				dpSingleList.add(barCode);
+	    	  				overallProduct.setDpSingleCodeList(dpSingleList);
+	    	  				overallProductList.add(overallProduct);
+	    	  				CountMessage();
+	    	  				LocalizationInformation();
+	    				}
+        		   }else if(barCodeType.equals("2")){//箱码
+        			   new Thread(getExistsBarCodeJson).start();
+        		   } 
         	   }
-        	   
-
         	   break;
            }
-		   
 
 		 }
        /**
