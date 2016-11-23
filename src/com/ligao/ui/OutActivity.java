@@ -72,7 +72,7 @@ public class OutActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.out_order_list);
 		
 		gobackTv = (TextView) findViewById(R.id.go_back);
@@ -441,7 +441,7 @@ public class OutActivity extends Activity implements OnClickListener {
 		}
 		if(!"".equals(outOrders)){
 			outOrderList.addAll((List<Order>)gson.fromJson(outOrders, type));
-		}
+		} 
 		//创建测试数据begin
 		//testXml();
 		//创建测试数据end
